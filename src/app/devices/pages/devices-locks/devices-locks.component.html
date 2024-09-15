@@ -1,0 +1,140 @@
+<app-table-wrapper>
+  <table class="table mb-3 table--nowrap" *ngIf="locks && locks.length">
+    <colgroup>
+      <col style="width: auto" />
+      <col style="width: 57px" />
+      <col style="width: 10%" />
+      <col style="width: 10%" />
+      <col style="width: 20%" />
+      <col style="width: 20%" />
+      <col style="width: 5%" />
+      <col style="width: 5%" />
+      <col style="width: auto" />
+    </colgroup>
+    <thead>
+      <tr>
+        <!-- temporary hidden -->
+        <!-- <th>
+          <mat-checkbox></mat-checkbox>
+        </th> -->
+        <th>{{ 'name' | translate }}</th>
+        <th></th>
+        <th>{{ 'status' | translate }}</th>
+        <th>{{ 'battery' | translate }}</th>
+        <th>{{ 'firmware' | translate }}</th>
+        <th>{{ 'serial_number' | translate }}</th>
+        <th>{{ 'autolock' | translate }}</th>
+        <th>{{ 'pull_spring' | translate }}</th>
+        <th>{{ 'mac_address' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="getLocks()">
+      <tr *ngFor="let lock of locks; trackBy: trackByDeviceId">
+        <!-- temporary hidden -->
+        <!-- <td>
+          <mat-checkbox></mat-checkbox>
+        </td> -->
+        <td class="device-name" [class.disconnected]="!lock.statuses.isConnected">
+          <a class="device-name__wrapper" [routerLink]="['/devices/lock/' + lock.deviceId | slugUrl]">
+            {{ lock.name }}
+          </a>
+        </td>
+        <td class="context__menu">
+          <app-contextual-menu
+            menuName="device_actions"
+            class="d-inline"
+            [items]="permissions.canCurrentUserUnassignDevices ? contextMenu : contextMenuBasic"
+            (action)="contextMenuAction($event, lock)"
+          ></app-contextual-menu>
+        </td>
+        <td>
+          <span class="status-icon">
+            <mat-icon
+              *ngIf="lock.statuses.isConnected; else isDisconnected"
+              [svgIcon]="'example_connected'"
+              [matTooltip]="'connected' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+            <ng-template #isDisconnected>
+              <span>
+                <mat-icon
+                  [svgIcon]="'example_disconnected'"
+                  [matTooltip]="'disconnected' | translate"
+                  matTooltipClass="icon-tooltip"
+                  matTooltipPosition="right"
+                >
+                </mat-icon>
+              </span>
+            </ng-template>
+          </span>
+          <span class="status-icon">
+            <mat-icon
+              *ngIf="lock.statuses.lockState >= 0 && lock.statuses.isConnected"
+              [svgIcon]="lockStateIcons[lock.statuses.lockState].icon"
+              [matTooltip]="lockStateIcons[lock.statuses.lockState].tooltip | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+          </span>
+          <span class="status-icon">
+            <mat-icon
+              *ngIf="lock.statuses.softwareUpdateAvailable"
+              [svgIcon]="'example_update'"
+              [matTooltip]="'update_required' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+          </span>
+        </td>
+        <td>
+          <span class="material-icons battery" [class.none]="!lock.battery" [class.hight]="lock.battery > 15"> fiber_manual_record </span>
+          {{ lock.battery && lock.battery + '%' }}
+        </td>
+        <td>
+          {{ lock.firmware || '-' }}
+        </td>
+        <td>
+          {{ lock.serialNumber || '-' }}
+        </td>
+        <td>
+          <span class="on" *ngIf="lock.autoLock; else autoLockOff">
+            {{ 'on' | translate }}
+          </span>
+          <ng-template #autoLockOff>
+            <span>
+              {{ 'off' | translate }}
+            </span>
+          </ng-template>
+        </td>
+        <td>
+          <span class="on" *ngIf="lock.pullSpring; else pullSpringOff">
+            {{ 'on' | translate }}
+          </span>
+          <ng-template #pullSpringOff>
+            <span>
+              {{ 'off' | translate }}
+            </span>
+          </ng-template>
+        </td>
+        <td>
+          {{ lock.mac || '-' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</app-table-wrapper>
+
+<app-alert *ngIf="isError" type="danger">
+  {{ 'something_went_wrong' | translate }}
+  <a role="button" (click)="refreshLocks()">
+    {{ 'try_again' | translate }}
+  </a>
+</app-alert>
+
+<app-devices-not-found *ngIf="locks.length == 0 && !isLoading && !isError"></app-devices-not-found>
+
+<mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="4" class="ml-auto mr-auto"></mat-spinner>

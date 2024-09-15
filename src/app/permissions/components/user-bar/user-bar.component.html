@@ -1,0 +1,13 @@
+<div class="users-bar">
+  <a
+    [routerLink]="['/users/' + user.id | slugUrl]"
+    class="users-bar__item"
+    *ngFor="let user of users; let i = index; trackBy: trackByIdentificator"
+    [ngClass]="{ 'users-bar__item--active': i == hoverUserIndex }"
+    (mouseenter)="updateHoverIndex(i)"
+    (mouseleave)="updateHoverIndex(null)"
+  >
+    <div class="users-bar__name">{{ user.displayName }}</div>
+    <div class="users-bar__email" *ngIf="user.email">{{ user.email }}</div>
+  </a>
+</div>

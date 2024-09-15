@@ -1,0 +1,133 @@
+@import 'variables';
+@import 'mixins';
+
+mat-list-item {
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  &.mat-list-item {
+    color: $color-secondary !important;
+    font-size: 15px !important;
+
+    mat-icon {
+      width: 22px;
+      height: 22px;
+      padding: 13px 26px 13px 13px;
+      flex-shrink: 0;
+    }
+    a {
+      height: 100%;
+      border-left: 4px solid transparent;
+      color: $color-secondary !important;
+      text-decoration: none;
+      &:hover,
+      &:visited,
+      &:active {
+        text-decoration: none;
+      }
+      &:hover {
+        @include background-opacity($color-secondary, 0.05);
+        cursor: pointer;
+        font-weight: normal;
+      }
+      &.active-link {
+        border-left: 4px solid $color-primary;
+        @include background-opacity($color-secondary, 0.05);
+        cursor: pointer;
+        font-weight: bold;
+      }
+      &.active-group {
+        @include background-opacity($color-secondary, 0.15);
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.itemGroup-with-child-selected {
+  mat-list-item {
+    &.mat-list-item {
+      a {
+        background-color: $color-gray-300;
+        cursor: pointer;
+        &.active-link {
+          border-left: 4px solid $color-primary;
+          background-color: $color-gray-400;
+          cursor: pointer;
+          font-weight: bold;
+
+          &:hover {
+            font-weight: bold;
+          }
+        }
+        &:hover {
+          @include background-opacity($color-secondary, 0.05);
+          cursor: pointer;
+          font-weight: normal;
+        }
+        &.itemGroup-parent {
+          &:hover {
+            @include background-opacity($color-secondary, 0.15);
+            cursor: pointer;
+          }
+        }
+      }
+    }
+    &.subItem {
+      height: 48px;
+    }
+  }
+}
+
+.subItemsMenu {
+  position: absolute;
+  top: 0px;
+  left: 212px;
+  min-width: 125px;
+  background-color: $color-gray-300;
+  z-index: 4;
+  mat-list-item {
+    &.mat-list-item {
+      a {
+        border-left: none;
+        text-decoration: none;
+        &:hover,
+        &:visited,
+        &:active {
+          text-decoration: none;
+        }
+        &:hover {
+          background-color: $color-gray-400;
+          cursor: pointer;
+          font-weight: normal;
+        }
+        &.active-link {
+          @include background-opacity($color-secondary, 0.05);
+          cursor: pointer;
+          font-weight: bold;
+        }
+      }
+      &.subItem {
+        height: 36px;
+        mat-icon {
+          padding: 7px 6px 7px 14px;
+        }
+      }
+    }
+  }
+  .subItem-header {
+    height: 48px;
+
+    a {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      padding-left: 16px;
+      &:hover {
+        background-color: $color-gray-300;
+        cursor: pointer;
+        font-weight: normal;
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+<div class="layout">
+  <app-sidebar *ngIf="sidebarOpened"></app-sidebar>
+  <app-toolbar
+    class="layout__toolbar"
+    [brandCollapsed]="sidenavCollapsed || isMobile || !hasOrganization"
+    [togglerShown]="!sidenavOpened"
+    [togglerOpened]="sidenavOpened"
+    (toggle)="toggleSidenav()"
+  ></app-toolbar>
+
+  <app-sidenav
+    class="layout__sidenav"
+    [collapsed]="sidenavCollapsed"
+    [hidden]="sidenavHidden"
+    [isMobile]="isMobile"
+    (collapse)="collapseSidenav()"
+    (toggle)="toggleSidenav()"
+  ></app-sidenav>
+
+  <main
+    class="layout__body"
+    [ngClass]="{
+      'layout__body--full-width': !sidenavHidden && !sidenavCollapsed,
+      'layout__body--collapsed': !sidenavHidden && sidenavCollapsed
+    }"
+    [hidden]="contentHidden"
+  >
+    <router-outlet></router-outlet>
+  </main>
+</div>

@@ -1,0 +1,23 @@
+<app-page>
+  <app-page-title
+    [title]="'users' | translate"
+    [tooltip]="'manage_users' | translate"
+    page-title
+  ></app-page-title>
+
+  <ng-container page-actions>
+    <button type="button" class="button button--primary" (click)="addUser()" [appTrackEvent]="{
+      name: eventNames.addUser,
+      place: eventPlaces.pageActions,
+      component: eventComponents.button
+    }">
+      {{ 'add_user' | translate }}
+    </button>
+
+  </ng-container>
+
+  <ng-container page-body>
+    <router-outlet></router-outlet>
+  </ng-container>
+</app-page>
+

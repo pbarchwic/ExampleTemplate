@@ -1,0 +1,22 @@
+@import 'variables';
+
+.organization-info {
+  padding-left: 16px;
+  padding-right: 16px;
+  background: $color-gray-400;
+  height: 85px;
+  display: flex;
+  align-items: center;
+  &__picture {
+    margin-right: 15px;
+  }
+  &__name {
+    font-size: 15px;
+    font-weight: 300;
+    color: $color-secondary;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

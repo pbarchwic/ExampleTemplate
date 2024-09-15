@@ -1,0 +1,54 @@
+<div class="grid-container">
+  <div class="grid-container__devices">
+    <app-device-bar
+      [devices]="devices"
+      [deviceType]="deviceType"
+      [hoverDeviceIndex]="hoverDeviceIndex"
+      [transformPx]="transformPx"
+      [matrixColWidth]="scrollData.columnWidth"
+      [isFirstPage]="isOnFirstPage"
+      [isLastPage]="isOnLastPage"
+      [isNavigationVisible]="isNavigationVisible"
+      (deviceHovered)="setHoverIndex(null, $event)"
+      (horizontalNavigation)="scrollMatrix($event)"
+    ></app-device-bar>
+  </div>
+  <div class="grid-container__row" infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="loadMore.emit()">
+    <div class="matrix" *ngIf="devices">
+      <div class="matrix__users">
+        <app-user-bar [users]="users" [hoverUserIndex]="hoverUserIndex" (userHovered)="setHoverIndex($event, null)"></app-user-bar>
+      </div>
+      <div class="matrix__container" #matrixContainer cdkScrollable>
+        <div class="matrix__permissions" [ngStyle]="{ left: '-' + transformPx + 'px' }">
+          <div
+            *ngFor="let user of users; let userIndex = index; trackBy: trackByIdentificator"
+            class="matrix__row"
+            [ngClass]="{ 'matrix__row--active': userIndex == hoverUserIndex }"
+            [attr.data-cy]="user.id"
+          >
+            <div
+              *ngFor="let device of devices; let deviceIndex = index; trackBy: trackByIdentificator"
+              class="matrix__col"
+              [ngStyle]="{ width: scrollData.columnWidth + 'px', backgroundColor: user.mappedPermissions[device.id].color }"
+              [ngClass]="{ 'matrix__col--active': deviceIndex == hoverDeviceIndex }"
+            >
+              <app-permission-share
+                [userIndex]="userIndex"
+                [deviceIndex]="deviceIndex"
+                [deviceType]="deviceType"
+                [user]="user"
+                [device]="device"
+                (showSidebar)="addPermission(user, device)"
+                (hoverUpdated)="setHoverIndex($event.userIndex, $event.deviceIndex)"
+              >
+              </app-permission-share>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="grid-container__vertical-bar" *ngIf="!isOnLastPage">
+      <app-vertical-bar [users]="users"></app-vertical-bar>
+    </div>
+  </div>
+</div>

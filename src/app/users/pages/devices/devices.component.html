@@ -1,0 +1,108 @@
+<app-table-wrapper>
+  <table class="table mb-3 table--nowrap" *ngIf="devices && devices.length">
+    <thead>
+      <tr>
+        <!-- temporary hidden -->
+        <!-- <th>
+          <mat-checkbox></mat-checkbox>
+        </th> -->
+        <th>{{ 'name' | translate }}</th>
+        <th></th>
+        <th>{{ 'type' | translate }}</th>
+        <th>{{ 'access_level' | translate }}</th>
+        <th>{{ 'access_type' | translate }}</th>
+        <th>{{ 'from' | translate }}</th>
+        <th>{{ 'to' | translate }}</th>
+        <th>{{ 'remote_unlock' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="getDevices()">
+      <tr *ngFor="let device of devices; trackBy: trackByDeviceId">
+        <!-- temporary hidden -->
+        <!-- <td>
+          <mat-checkbox>
+          </mat-checkbox>
+        </td> -->
+        <td class="device-name static">
+          <div class="device-name__wrapper">
+            <a [routerLink]="['/devices/' + (device.deviceType === 1 ? 'bridge/' : 'lock/') + device.deviceId | slugUrl]">
+              {{ device.deviceName }}
+            </a>
+          </div>
+        </td>
+        <td>
+          <app-contextual-menu
+            menuName="device_actions"
+            class="d-inline"
+            [items]="contextMenu"
+            (action)="contextMenuAction($event, device)"
+          ></app-contextual-menu>
+        </td>
+        <td>
+          {{ 'enum_deviceType_' + device.deviceType | translate }}
+        </td>
+        <td>
+          <ng-container [ngSwitch]="device.accessLevel">
+            <ng-container *ngSwitchCase="0">
+              {{ 'guest' | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="1">
+              {{ 'admin' | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="2">
+              {{ 'owner' | translate }}
+            </ng-container>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container [ngSwitch]="device.accessType">
+            <ng-container *ngSwitchCase="0">
+              {{ 'permanet' | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="1">
+              {{ 'time_restricted' | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="2">
+              {{ 'custom' | translate }}
+            </ng-container>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngIf="device.repeatEvent.startDate as startDate">
+            {{ startDate | dateTimeFormat }}
+          </ng-container>
+          <ng-container *ngIf="!device.repeatEvent.startDate">
+            {{ '-' }}
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngIf="device.repeatEvent.endDate as endDate">
+            {{ endDate | dateTimeFormat }}
+          </ng-container>
+          <ng-container *ngIf="!device.repeatEvent.endDate">
+            {{ '-' }}
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngIf="device.remoteAccessDisabled">
+            {{ 'off' | translate }}
+          </ng-container>
+          <ng-container *ngIf="!device.remoteAccessDisabled">
+            <strong>{{ 'on' | translate }}</strong>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</app-table-wrapper>
+
+<app-alert *ngIf="isError" type="danger">
+  {{ 'something_went_wrong' | translate }}
+  <a role="button" (click)="refreshDevices()">
+    {{ 'try_again' | translate }}
+  </a>
+</app-alert>
+
+<app-user-devices-not-found *ngIf="devices.length == 0 && !isLoading && !isError"></app-user-devices-not-found>
+
+<mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="4" class="ml-auto mr-auto"></mat-spinner>

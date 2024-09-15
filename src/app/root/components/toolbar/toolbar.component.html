@@ -1,0 +1,25 @@
+<header class="toolbar">
+  <div class="toolbar__brand" [ngClass]="{ 'toolbar__brand--collapsed': brandCollapsed }">
+    <a [routerLink]="['/']" class="toolbar__logo">
+      <img *ngIf="brandCollapsed" class="toolbar__sygnet" src="/assets/images/sygnet.svg" />
+      <img *ngIf="!brandCollapsed" src="/assets/images/logo.svg" />
+    </a>
+    <button
+      *ngIf="hasOrganization"
+      class="toolbar__toggler button button--clear d-flex d-md-none"
+      (click)="toggle.emit()"
+      [ngClass]="{ 'toolbar__toggler--white': togglerOpened }"
+    >
+      <mat-icon
+        [svgIcon]="togglerOpened ? 'example_close' : 'example_menu'"
+        [attr.data-cy]="togglerOpened ? 'example_close' : 'example_menu'"
+      ></mat-icon>
+    </button>
+  </div>
+  <div *ngIf="hasOrganization" class="toolbar__breadcrumbs">
+    <app-breadcrumbs></app-breadcrumbs>
+  </div>
+  <div class="toolbar__menu">
+    <app-user-menu></app-user-menu>
+  </div>
+</header>

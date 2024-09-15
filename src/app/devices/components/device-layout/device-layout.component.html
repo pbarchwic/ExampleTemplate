@@ -1,0 +1,71 @@
+<app-page>
+  <div class="device-layout" page-title>
+    <app-page-title [title]="device.name" page-title></app-page-title>
+    <div class="ml-4">
+      <mat-icon
+        *ngIf="device.isConnected"
+        class="mr-2"
+        [svgIcon]="'example_connected'"
+        [matTooltip]="'connected' | translate"
+        matTooltipClass="icon-tooltip"
+        matTooltipPosition="right"
+      ></mat-icon>
+      <mat-icon
+        *ngIf="!device.isConnected"
+        class="mr-2"
+        [svgIcon]="'example_disconnected'"
+        [matTooltip]="'disconnected' | translate"
+        matTooltipClass="icon-tooltip"
+        matTooltipPosition="right"
+      ></mat-icon>
+      <ng-container *ngIf="device.lockProperties">
+        <mat-icon
+          *ngIf="device.lockProperties.state >= 0 && device.isConnected"
+          class="mr-2"
+          [svgIcon]="lockStateIcons[device.lockProperties.state].icon"
+          [matTooltip]="lockStateIcons[device.lockProperties.state].tooltip | translate"
+          matTooltipClass="icon-tooltip"
+          matTooltipPosition="right"
+        ></mat-icon>
+      </ng-container>
+      <mat-icon
+        *ngIf="updateAvailable"
+        class="mr-2"
+        [svgIcon]="'example_update'"
+        [matTooltip]="'update_required' | translate"
+        matTooltipClass="icon-tooltip"
+        matTooltipPosition="right"
+      ></mat-icon>
+      <ng-container *ngIf="device.lockProperties">
+        <mat-icon
+          *ngIf="device.lockProperties.batteryLevel <= 15 && device.lockProperties.batteryLevel !== null"
+          [svgIcon]="'example_battery_low'"
+          [matTooltip]="('battery_level' | translate) + ': ' + device.lockProperties.batteryLevel + '%'"
+          matTooltipClass="icon-tooltip"
+          matTooltipPosition="right"
+        ></mat-icon>
+      </ng-container>
+    </div>
+  </div>
+
+  <ng-container page-actions>
+    <button
+      *ngIf="deviceContext.showGrantAccess$ | async"
+      type="button"
+      class="button button--primary"
+      (click)="addPermission()"
+      [appTrackEvent]="{
+        name: eventNames.grantAccess,
+        place: eventPlaces.pageActions,
+        component: eventComponents.button
+      }"
+    >
+      {{ 'grant_access' | translate }}
+    </button>
+  </ng-container>
+
+  <ng-container page-body>
+    <app-tabs [tabs]="tabs"></app-tabs>
+    <router-outlet></router-outlet>
+  </ng-container>
+</app-page>

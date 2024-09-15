@@ -1,0 +1,67 @@
+@import 'variables';
+@import 'mixins';
+
+.sidenav {
+  height: 100%;
+
+  &__container {
+    display: flex;
+    flex-direction: column;
+    background-color: $color-white;
+    box-shadow: 0 0 19px 0 rgba(0, 0, 0, 0.06);
+    min-height: 100%;
+  }
+
+  &__toggler {
+    display: block;
+    width: 100%;
+    height: 50px;
+    padding-left: 15px;
+    margin-top: auto;
+    user-select: none;
+    text-align: left;
+    flex-shrink: 0;
+
+    &:hover {
+      @include background-opacity($color-secondary, 0.05);
+    }
+
+    mat-icon {
+      color: $color-secondary;
+    }
+  }
+}
+
+mat-list {
+  &.main-menu {
+    background-color: $color-white;
+    &.mat-list-base {
+      padding-top: 24px !important;
+    }
+  }
+}
+::ng-deep .main-menu .mat-list-item-content {
+  padding: 0px !important;
+}
+
+::ng-deep .main-menu .mat-expansion-panel-body {
+  padding: 0px !important;
+}
+
+@media screen and (max-width: 767px) {
+  .sidenav {
+    flex: 0 0 100%;
+
+    &__toggler {
+      display: none;
+    }
+  }
+
+  mat-list {
+    &.main-menu {
+      &.mat-list-base {
+        padding-top: 0px !important;
+      }
+    }
+  }
+}

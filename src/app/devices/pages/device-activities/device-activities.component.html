@@ -1,0 +1,20 @@
+<div
+  *ngIf="activities && activities.length"
+  infiniteScroll
+  [infiniteScrollDistance]="2"
+  [infiniteScrollThrottle]="50"
+  (scrolled)="getActivites()"
+>
+  <app-activities [activities]="activities"></app-activities>
+</div>
+
+<app-alert *ngIf="isError" type="danger">
+  {{ 'something_went_wrong' | translate }}
+  <a role="button" (click)="refreshActivities()">
+    {{ 'try_again' | translate }}
+  </a>
+</app-alert>
+
+<app-device-activities-not-found *ngIf="activities.length == 0 && !isLoading && !isError"></app-device-activities-not-found>
+
+<mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="4" class="ml-auto mr-auto"></mat-spinner>

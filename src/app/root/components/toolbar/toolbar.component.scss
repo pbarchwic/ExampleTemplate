@@ -1,0 +1,74 @@
+@import 'variables';
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  height: 50px;
+  background-color: $color-secondary;
+  color: $color-white;
+  box-shadow: 0 0 19px 0 rgba(0, 0, 0, 0.1);
+
+  &__brand {
+    display: flex;
+    flex-basis: 212px;
+    height: 100%;
+
+    &--collapsed {
+      flex-basis: auto;
+      padding-left: 0;
+
+      .toolbar__logo {
+        padding: 0 15px;
+      }
+    }
+  }
+
+  &__logo {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    &:hover {
+      background-color: rgb(245, 245, 245, 0.15);
+    }
+  }
+
+  &__sygnet {
+    margin: 0 -15px;
+  }
+
+  &__toggler {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 100%;
+    margin-left: auto;
+    color: $color-white;
+
+    &--white {
+      background-color: $color-white;
+      color: $color-secondary;
+    }
+  }
+
+  &__menu {
+    margin-left: auto;
+  }
+}
+
+@media screen and (min-width: 768px) {
+  .toolbar {
+    &__logo {
+      width: 100%;
+    }
+  }
+}
+
+@media screen and (max-width: 600px) {
+  .toolbar {
+    &__brand {
+      flex-basis: auto;
+      padding: 0;
+    }
+  }
+}

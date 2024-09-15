@@ -1,0 +1,8 @@
+<div class="not-found">
+  <img class="not-found__image" src="/assets/images/not-found.png" />
+  <div class="not-found__title">{{ 'no_devices_found' | translate }}</div>
+  <div class="not-found__description">
+    {{ 'no_devices_found_description' | translate }}
+    <a class="not-found__link" [routerLink]="['/devices' | slugUrl]">{{ 'no_devices_found_link' | translate }}</a>
+  </div>
+</div>

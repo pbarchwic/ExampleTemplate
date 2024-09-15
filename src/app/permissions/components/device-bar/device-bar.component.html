@@ -1,0 +1,35 @@
+<div class="device-bar">
+  <div class="device-bar__container order-2 order-md-1" cdkScrollable>
+    <div class="device-bar__row" [ngStyle]="{ left: '-' + transformPx + 'px' }">
+      <a
+        [routerLink]="['/devices/' + (deviceType === 1 ? 'bridge/' : 'lock/') + device.id | slugUrl]"
+        class="device-bar__item"
+        *ngFor="let device of devices; let i = index; trackBy: trackByIdentificator"
+        [ngStyle]="{ width: matrixColWidth + 'px' }"
+        [ngClass]="{ 'device-bar__item--active': i == hoverDeviceIndex }"
+        (mouseenter)="updateHoverIndex(i)"
+        (mouseleave)="updateHoverIndex(null)"
+      >
+        <div
+          class="device-bar__name"
+          [matTooltipDisabled]="!(deviceName.scrollWidth > deviceName.clientWidth || deviceName.scrollHeight > deviceName.clientHeight)"
+          [matTooltip]="device.name"
+          matTooltipClass="device-tooltip"
+          matTooltipPosition="above"
+        >
+          <span #deviceName>{{ device.name }}</span>
+        </div>
+      </a>
+    </div>
+  </div>
+  <div class="device-bar__navigation order-1 order-md-2">
+    <div *ngIf="isNavigationVisible" class="device-bar__navigation-container">
+      <button class="button--clear device-bar__button device-bar__button--left" (click)="scrollMatrix('left')" [disabled]="isFirstPage">
+        <mat-icon svgIcon="example_left"></mat-icon>
+      </button>
+      <button class="button--clear device-bar__button device-bar__button--right" (click)="scrollMatrix('right')" [disabled]="isLastPage">
+        <mat-icon svgIcon="example_right"></mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

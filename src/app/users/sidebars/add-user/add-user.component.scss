@@ -1,0 +1,42 @@
+@import 'variables';
+
+::ng-deep {
+
+  .cdk-overlay-container {
+    z-index: 3000 !important;
+  }
+}
+
+.form {
+  &__header {
+    margin-top: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 300;
+    color: $color-secondary;
+  }
+  &__section {
+    border-radius: 4px;
+    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
+    background-color: $color-white;
+    padding: 16px 16px 0;
+  }
+  &__subheader {
+    font-size: 14px;
+    font-weight: 300;
+    color: $color-secondary;
+    margin-bottom: 16px;
+  }
+}
+
+.user-pending {
+  width: 391px;
+  height: 48px;
+  font-size: 14px;
+  line-height: 48px;
+  margin-bottom: 24px;
+  text-align: center;
+  border-radius: 4px;
+  background-color: $color-pending;
+  color: #ffffff;
+}

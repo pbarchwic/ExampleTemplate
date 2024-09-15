@@ -1,0 +1,19 @@
+<app-modal-wrapper [title]="'consent_title' | translate" [hideCloseButton]="true">
+  <ng-container>
+    <p class="consent__body">
+      {{ 'consent_body' | translate }}
+    </p>
+    <p class="consent__links">
+      <a [href]="'link_terms_and_conditions' | translate" target="_blank">
+        {{ 'terms_and_conditions' | translate }}
+      </a>
+      <a [href]="'link_privacy_policy' | translate" target="_blank">
+        {{ 'privacy_policy' | translate }}
+      </a>
+    </p>
+    <div class="text-right mt-4">
+      <button class="button button--default mr-2" (click)="reject()">{{ 'consent_reject' | translate }}</button>
+      <button class="button button--primary" (click)="accept()">{{ 'consent_accept' | translate }}</button>
+    </div>
+  </ng-container>
+</app-modal-wrapper>

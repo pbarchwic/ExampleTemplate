@@ -1,0 +1,103 @@
+<form class="device-details" (submit)="submit()">
+  <app-form-input
+    class="d-block"
+    [label]="'name' | translate"
+    [control]="form.get('deviceName')"
+    [minLength]="2"
+    [maxLength]="32"
+  ></app-form-input>
+  <span class="device-details__label status">{{ 'status' | translate }}</span>
+  <div class="device-details__status">
+    <div class="status-item">
+      <label>{{ 'connection' | translate }}</label>
+      <span class="description">
+        <mat-icon *ngIf="device.isConnected; else isDisconnected" [svgIcon]="'example_connected'"> </mat-icon>
+        <ng-template #isDisconnected>
+          <mat-icon [svgIcon]="'example_disconnected'"> </mat-icon>
+        </ng-template>
+        {{ (device.isConnected ? 'connected' : 'disconnected') | translate }}
+      </span>
+    </div>
+    <div class="status-item" *ngIf="device.type === deviceType.Lock">
+      <label>{{ 'lock' | translate }}</label>
+      <span class="description">
+        <mat-icon
+          *ngIf="device.isConnected && device.lockProperties.state >= 0 && device.lockProperties.state != 9"
+          [svgIcon]="lockStateIcons[device.lockProperties.state].icon"
+        ></mat-icon>
+        {{ (device.lockProperties ? lockStateIcons[device.lockProperties.state].tooltip : '-') | translate }}
+      </span>
+    </div>
+    <div class="status-item" *ngIf="device.type === deviceType.Lock">
+      <label>{{ 'battery' | translate }}</label>
+      <span class="description">
+        <span
+          *ngIf="device.lockProperties"
+          class="material-icons battery"
+          [class.none]="!device.lockProperties.batteryLevel"
+          [class.hight]="device.lockProperties.batteryLevel > 15"
+        >
+          fiber_manual_record
+        </span>
+        {{ device.lockProperties && device.lockProperties.batteryLevel ? device.lockProperties.batteryLevel + '%' : '-' }}
+      </span>
+    </div>
+  </div>
+  <span class="device-details__label">{{ 'firmware' | translate }}</span>
+  <div class="device-details__status">
+    <div class="status-item">
+      <label>{{ 'software' | translate }}</label>
+      <span class="description">
+        <mat-icon *ngIf="softwareInfo.updateAvailable" [svgIcon]="'example_update'"> </mat-icon>
+        {{ softwareInfo.version }}
+      </span>
+    </div>
+  </div>
+  <span class="device-details__label">{{ 'other' | translate }}</span>
+  <div class="device-details__status">
+    <div class="status-item">
+      <label>{{ 'serial_number' | translate }}</label>
+      <span class="description">{{ device.serialNumber }}</span>
+    </div>
+    <div class="status-item">
+      <label>{{ 'mac_address' | translate }}</label>
+      <span class="description">{{ device.macAddress }}</span>
+    </div>
+    <div class="status-item" *ngIf="device.type === deviceType.Lock">
+      <label>{{ 'paired_with' | translate }}</label>
+      <a
+        class="paried-device description"
+        *ngIf="!bridgeDetailsLoading && bridge"
+        [routerLink]="['/devices/bridge/' + device.connectedToId | slugUrl]"
+        >{{ bridge.name }}</a
+      >
+      <span class="description" *ngIf="!bridge">{{ (bridgeDetailsError ? 'unknown' : '-') | translate }}</span>
+      <span *ngIf="bridgeDetailsLoading" class="loader-placeholder"></span>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <app-alert *ngIf="isError" type="danger" class="d-block mb-3 mr-0 ml-auto">
+      {{ 'something_went_wrong' | translate }}
+      {{ 'try_again' | translate }}
+    </app-alert>
+    <div class="buttons-wrapper">
+      <button
+        type="button"
+        class="button button--default"
+        [routerLink]="['/devices' | slugUrl]"
+        [disabled]="nameControl.value === this.device.name || isUpdate"
+      >
+        {{ 'cancel' | translate }}
+      </button>
+      <button
+        type="submit"
+        class="button button--primary ml-3"
+        [disabled]="form.get('deviceName').invalid || nameControl.value === this.device.name"
+      >
+        <mat-spinner *ngIf="isUpdate" [diameter]="20" [strokeWidth]="2" class="ml-auto mr-auto"></mat-spinner>
+        <span *ngIf="!isUpdate">{{ 'apply_button' | translate }}</span>
+      </button>
+    </div>
+  </div>
+</form>

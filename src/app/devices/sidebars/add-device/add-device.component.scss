@@ -1,0 +1,37 @@
+::ng-deep {
+  .cdk-overlay-container {
+    z-index: 3000 !important;
+  }
+
+  .sidebar-content__body {
+    display: flex;
+    flex-direction: column;
+    max-height: calc(100% - 108px);
+    overflow: hidden;
+
+    @media screen and (max-height: 510px) {
+      min-height: 400px;
+    }
+  }
+}
+
+.devices {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  overflow: hidden;
+
+  &__label {
+    font-size: 14px;
+    font-weight: 300;
+
+    > strong {
+      font-weight: 600;
+    }
+  }
+
+  &__list {
+    display: block;
+    overflow: auto;
+  }
+}

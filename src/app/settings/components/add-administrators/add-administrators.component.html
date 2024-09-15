@@ -1,0 +1,37 @@
+<form [formGroup]="form" (submit)="submit()" *ngIf="form">
+  <div class="add-admin d-flex">
+    <div class="add-admin__autocomplete">
+      <app-form-autocomplete
+        [options]="usersOptions"
+        [searchBy]="['name', 'helperData']"
+        [readOnly]="false"
+        [selectedItem]="null"
+        [control]="form.get('user')"
+        [label]="'add_administrator' | translate"
+      ></app-form-autocomplete>
+    </div>
+    <div>
+      <button
+        type="submit"
+        class="button button--primary ml-3"
+        [ngClass]="{ button__loader: isLoading }"
+        [disabled]="isLoading || !isValid"
+      >
+        <mat-spinner
+          *ngIf="isLoading"
+          [diameter]="20"
+          [strokeWidth]="2"
+          class="ml-auto mr-auto"
+          [appTrackEvent]="{
+            name: eventNames.apiAddAdministrator,
+            component: eventComponents.button
+          }"
+        ></mat-spinner>
+        <span *ngIf="!isLoading">{{ 'add_button' | translate }}</span>
+      </button>
+    </div>
+  </div>
+  <app-alert *ngIf="isError" type="danger">
+    {{ 'something_went_wrong' | translate }}
+  </app-alert>
+</form>

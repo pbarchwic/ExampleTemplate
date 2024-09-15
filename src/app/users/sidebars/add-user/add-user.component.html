@@ -1,0 +1,43 @@
+<form class="h-100" (submit)="submit()">
+  <app-sidebar-content [title]="(editMode ? 'edit_user' : 'add_user') | translate" [loading]="isLoading">
+    <ng-container sidebar-content-body>
+      <div class="user-pending" *ngIf="editMode && !user.status">{{ 'invitation_is_pending' | translate }}</div>
+      <app-form-input [label]="'user_name' | translate" [control]="form.get('name')" [minLength]="2" [maxLength]="256"></app-form-input>
+      <app-form-input [label]="'user_email' | translate" [control]="form.get('email')" [maxLength]="256"></app-form-input>
+      <app-alert *ngIf="isError" type="danger" class="d-block mb-3">
+        <ng-container *ngIf="error === 400">
+          {{ 'user_exist' | translate }}
+        </ng-container>
+        <ng-container *ngIf="error !== 400">
+          {{ 'something_went_wrong' | translate }}
+          {{ 'try_again' | translate }}
+        </ng-container>
+      </app-alert>
+    </ng-container>
+    <ng-container sidebar-content-footer>
+      <div class="text-right">
+        <button type="button" class="button button--default" (click)="close()">
+          {{ 'cancel' | translate }}
+        </button>
+        <button type="button" class="button button--outline-danger ml-3" *ngIf="editMode && !user.isOwner" (click)="deleteUser()">
+          {{ 'delete' | translate }}
+        </button>
+        <button
+          type="submit"
+          class="button button--primary ml-3"
+          [appTrackEvent]="{
+            name: !editMode ? eventNames.apiAddUser : eventNames.apiEditUser,
+            component: eventComponents.button
+          }"
+        >
+          <ng-container *ngIf="!editMode">
+            {{ 'add_user' | translate }}
+          </ng-container>
+          <ng-container *ngIf="editMode">
+            {{ 'apply_button' | translate }}
+          </ng-container>
+        </button>
+      </div>
+    </ng-container>
+  </app-sidebar-content>
+</form>

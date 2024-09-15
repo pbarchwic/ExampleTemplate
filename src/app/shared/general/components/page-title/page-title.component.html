@@ -1,0 +1,11 @@
+<h1 class="page-title">
+  {{ title }}
+  <mat-icon
+    *ngIf="tooltip"
+    class="page-title__icon d-none d-md-block"
+    [svgIcon]="tooltipIcon"
+    [matTooltip]="tooltip"
+    [matTooltipPosition]="tooltipPosition"
+    matTooltipClass="page-title__tooltip"
+  ></mat-icon>
+</h1>

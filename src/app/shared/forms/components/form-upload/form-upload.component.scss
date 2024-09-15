@@ -1,0 +1,132 @@
+@import 'variables';
+
+.upload {
+  &__field {
+    position: relative;
+    display: block;
+    padding: 16px 16px 14px 16px;
+    background-color: rgba($color-secondary, 0.05);
+    border-left: 1px solid $color-secondary;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+
+    &:not(.drop-over):not(:focus).invalid {
+      border-left-color: $color-error;
+      .upload__label {
+        color: $color-error;
+      }
+    }
+
+    &:hover {
+      background-color: rgba($color-secondary, 0.1);
+    }
+
+    &.drop-over, &:focus {
+      padding-left: 13px;
+      border-left: 4px solid $color-primary;
+      background-color: rgba($color-secondary, 0.1);
+      outline: none;
+    }
+  }
+
+  &__header {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+
+  &__label {
+    font-size: 14px;
+    font-weight: 500;
+    color: $color-secondary;
+  }
+
+  &__actions {
+    position: absolute;
+    top: 16px; right: 16px;
+  }
+
+  &__body {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    &:not(:last-child) {
+      margin-bottom: 10px;
+    }
+  }
+
+  &__preview {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: 41px;
+    height: 41px;
+    margin-right: 15px;
+    background-color: $color-white;
+    border-radius: 50%;
+    box-shadow: 0 0 19px 0 rgba(0, 0, 0, 0.06);
+    font-size: 15px;
+    color: $color-gray-300;
+
+    > img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+    }
+  }
+
+  &__placeholder {
+    font-weight: 300;
+    font-size: 14px;
+    color: $color-black;
+
+    > strong {
+      font-weight: 500;
+      color: $color-secondary;
+    }
+  }
+
+  &__hint {
+    font-size: 12px;
+    font-weight: 300;
+    color: $color-black;
+  }
+
+  &__messages {
+    min-height: 23px;
+    margin-top: 10px;
+    padding: 0 16px;
+    font-size: 12px;
+    line-height: 1.125;
+    font-weight: 500;
+    overflow: hidden;
+
+    > div {
+      animation-duration: 0.3s;
+      animation-name: fadeInDown;
+
+      &:not(:last-child) {
+        margin-bottom: 5px;
+      }
+    }
+  }
+
+  &__error {
+    color: $color-error;
+  }
+}
+
+@keyframes fadeInDown {
+	0% {
+		opacity: 0;
+		transform: translateY(-150%);
+	}
+
+	100% {
+		opacity: 1;
+		transform: translateY(0);
+	}
+}

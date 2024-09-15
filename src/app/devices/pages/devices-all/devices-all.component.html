@@ -1,0 +1,124 @@
+<app-table-wrapper>
+  <table class="table mb-3 table--nowrap" *ngIf="devices && devices.length">
+    <colgroup>
+      <col style="width: auto" />
+      <col style="width: 57px" />
+      <col style="width: 10%" />
+      <col style="width: 10%" />
+      <col style="width: 20%" />
+      <col style="width: 30%" />
+      <col style="width: auto" />
+    </colgroup>
+    <thead>
+      <tr>
+        <!-- temporary hidden -->
+        <!-- <th>
+          <mat-checkbox></mat-checkbox> 
+        </th> -->
+        <th>{{ 'name' | translate }}</th>
+        <th></th>
+        <th>{{ 'type' | translate }}</th>
+        <th>{{ 'status' | translate }}</th>
+        <th>{{ 'firmware' | translate }}</th>
+        <th>{{ 'serial_number' | translate }}</th>
+        <th>{{ 'mac_address' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="getDevices()">
+      <tr *ngFor="let device of devices; trackBy: trackByDeviceId">
+        <!-- temporary hidden -->
+        <!-- <td>
+          <mat-checkbox>
+          </mat-checkbox>
+        </td> -->
+        <td class="device-name" [class.disconnected]="!device.statuses.isConnected">
+          <a class="device-name__wrapper" [routerLink]="['/devices/' + (device.type === 1 ? 'bridge/' : 'lock/') + device.id | slugUrl]">
+            {{ device.name }}
+          </a>
+        </td>
+        <td class="context__menu">
+          <app-contextual-menu
+            menuName="device_actions"
+            class="d-inline"
+            [items]="permissions.canCurrentUserUnassignDevices ? contextMenu : contextMenuBasic"
+            (action)="contextMenuAction($event, device)"
+          ></app-contextual-menu>
+        </td>
+        <td>
+          {{ 'enum_deviceType_' + device.type | translate }}
+        </td>
+        <td>
+          <span class="status-icon">
+            <mat-icon
+              *ngIf="device.statuses.isConnected; else isDisconnected"
+              [svgIcon]="'example_connected'"
+              [matTooltip]="'connected' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+            <ng-template #isDisconnected>
+              <span>
+                <mat-icon
+                  [svgIcon]="'example_disconnected'"
+                  [matTooltip]="'disconnected' | translate"
+                  matTooltipClass="icon-tooltip"
+                  matTooltipPosition="right"
+                >
+                </mat-icon>
+              </span>
+            </ng-template>
+          </span>
+          <span class="status-icon">
+            <mat-icon
+              *ngIf="device.statuses.lockState != null && device.statuses.lockState >= 0 && device.statuses.isConnected"
+              [svgIcon]="lockStateIcons[device.statuses.lockState].icon"
+              [matTooltip]="lockStateIcons[device.statuses.lockState].tooltip | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+          </span>
+          <span class="status-icon" *ngIf="device.statuses.deviceSoftwareUpdateAvailable">
+            <mat-icon
+              [svgIcon]="'example_update'"
+              [matTooltip]="'update_required' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+          </span>
+          <span class="status-icon" *ngIf="device.statuses.wiFiSoftwareUpdateAvailable">
+            <mat-icon
+              [svgIcon]="'example_wifi_update'"
+              [matTooltip]="'wifi_update_required' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+          </span>
+        </td>
+        <td>
+          {{ device.firmware || '-' }}
+        </td>
+        <td>
+          {{ device.serialNumber || '-' }}
+        </td>
+        <td>
+          {{ device.mac || '-' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</app-table-wrapper>
+
+<app-alert *ngIf="isError" type="danger">
+  {{ 'something_went_wrong' | translate }}
+  <a role="button" (click)="refreshDevices()">
+    {{ 'try_again' | translate }}
+  </a>
+</app-alert>
+
+<app-devices-not-found *ngIf="devices.length == 0 && !isLoading && !isError"></app-devices-not-found>
+
+<mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="4" class="ml-auto mr-auto"></mat-spinner>

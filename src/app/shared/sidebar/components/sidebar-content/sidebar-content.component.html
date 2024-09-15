@@ -1,0 +1,19 @@
+<div #sidebarContent class="sidebar-content">
+  <div class="sidebar-content__header">
+    <h3 class="sidebar-content__title">
+      {{ title }}
+    </h3>
+    <button type="button" class="sidebar-content__close button button--clear" (click)="close()">
+      <mat-icon svgIcon="example_close"></mat-icon>
+    </button>
+  </div>
+  <div class="sidebar-content__body">
+    <ng-content select="[sidebar-content-body]"></ng-content>
+  </div>
+  <div class="sidebar-content__footer">
+    <ng-content select="[sidebar-content-footer]"></ng-content>
+  </div>
+  <div *ngIf="loading" class="sidebar-content__loader" [style.height.px]="sidebarContent.scrollHeight">
+    <mat-spinner [diameter]="50" [strokeWidth]="4"></mat-spinner>
+  </div>
+</div>

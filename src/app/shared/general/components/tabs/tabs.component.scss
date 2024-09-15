@@ -1,0 +1,30 @@
+@import 'variables';
+
+.tabs {
+  margin-bottom: 16px;
+  .tab {
+    color: $color-secondary;
+    font-size: 16px;
+    font-weight: 300;
+    opacity: 1;
+    padding: 0px 8px;
+    margin-right: 26px;
+    min-width: auto;
+    height: 34px;
+    &:hover {
+      text-decoration: none;
+    }
+    &.mat-tab-label-active {
+      font-weight: 500;
+    }
+  }
+
+  ::ng-deep &.mat-tab-header {
+    border-bottom: none;
+  }
+
+  ::ng-deep .mat-ink-bar {
+    background-color: $color-primary;
+    height: 4px;
+  }
+}

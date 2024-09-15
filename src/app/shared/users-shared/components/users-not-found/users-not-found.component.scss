@@ -1,0 +1,26 @@
+@import 'variables';
+
+.not-found {
+  color: $color-secondary;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  &__image {
+    margin-top: 40px;
+    width: 205px;
+  }
+  &__title {
+    margin-top: 24px;
+    font-size: 15px;
+    font-weight: 500;
+  }
+  &__description {
+    margin-top: 16px;
+    font-size: 12px;
+    font-weight: 300;
+  }
+  &__link {
+    color: $color-secondary;
+    font-weight: 500;
+  }
+}

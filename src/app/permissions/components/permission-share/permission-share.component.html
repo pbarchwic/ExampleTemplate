@@ -1,0 +1,28 @@
+<div
+  class="matrix__permission"
+  (mouseenter)="setHoverIndex(userIndex, deviceIndex)"
+  (mouseleave)="resetHoverIndex()"
+  (click)="addPermission()"
+  [attr.data-cy-device]="device.id"
+  cdkOverlayOrigin
+  #triggerPermissionDetails="cdkOverlayOrigin"
+  [appTrackEvent]="{
+    name: eventNames.grantAccess,
+    place: eventPlaces.pageContent,
+    component: eventComponents.button
+  }"
+>
+  <mat-icon class="matrix__icon" *ngIf="!user.isOwner" [svgIcon]="user.mappedPermissions[device.id].icon"></mat-icon>
+  <mat-icon
+    class="matrix__icon matrix__icon--no-hover"
+    *ngIf="user.isOwner"
+    svgIcon="example_owner"
+    [matTooltip]="'organization_owner' | translate"
+    matTooltipClass="matrix__tooltip"
+    matTooltipPosition="right"
+  ></mat-icon>
+</div>
+
+<ng-template cdkConnectedOverlay [cdkConnectedOverlayOrigin]="triggerPermissionDetails" [cdkConnectedOverlayOpen]="detailsOpen">
+  <app-permission-share-details [user]="user" [device]="device" [deviceType]="deviceType"> </app-permission-share-details>
+</ng-template>

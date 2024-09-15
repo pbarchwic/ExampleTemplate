@@ -1,0 +1,5 @@
+<nav class="breadcrumbs">
+  <a *ngFor="let breadcrumb of breadcrumbs" [routerLink]="[breadcrumb.url]" class="breadcrumbs__item">
+    {{ breadcrumb.label }}
+  </a>
+</nav>

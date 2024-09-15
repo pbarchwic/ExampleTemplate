@@ -1,0 +1,7 @@
+<mat-form-field class="timepicker" appearance="fill">
+  <mat-label>{{ label }}</mat-label>
+  <input matInput type="time" [formControl]="control" [min]="min" [max]="max" />
+  <mat-error *ngIf="control.hasError('required')">
+    {{ 'validation_required' | translate }}
+  </mat-error>
+</mat-form-field>

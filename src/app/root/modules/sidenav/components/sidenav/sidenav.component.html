@@ -1,0 +1,43 @@
+<div class="sidenav" [@openClose]="collapsed ? 'closed' : 'open'" (@openClose.done)="animationDone()">
+  <div class="sidenav__container">
+    <app-organization-info *ngIf="isMobile" (menuNavigate)="navigate($event)"></app-organization-info>
+    <mat-list class="main-menu">
+      <ng-container *ngFor="let item of sidenavService.sidenavItems$ | async" [ngSwitch]="sidenavType">
+        <ng-container
+          *ngSwitchCase="'mobile'"
+          [ngTemplateOutlet]="mobileListItem"
+          [ngTemplateOutletContext]="{ item: item }"
+        ></ng-container>
+        <ng-container
+          *ngSwitchCase="'collapsed'"
+          [ngTemplateOutlet]="collapsedListItem"
+          [ngTemplateOutletContext]="{ item: item }"
+        ></ng-container>
+        <ng-container
+          *ngSwitchCase="'expanded'"
+          [ngTemplateOutlet]="fullListItem"
+          [ngTemplateOutletContext]="{ item: item }"
+        ></ng-container>
+      </ng-container>
+    </mat-list>
+
+    <button class="sidenav__toggler button button--clear" (click)="collapse.emit()">
+      <mat-icon [svgIcon]="collapsed ? 'example_right' : 'example_left'" [attr.data-cy]="collapsed ? 'example_right' : 'example_left'"></mat-icon>
+    </button>
+  </div>
+</div>
+
+<!-- List item for full mode -->
+<ng-template #fullListItem let-item="item">
+  <app-menu-full [item]="item" (menuNavigate)="navigate($event)"></app-menu-full>
+</ng-template>
+
+<!-- List item for collapsed mode -->
+<ng-template #collapsedListItem let-item="item">
+  <app-menu-collapsed [item]="item" (menuNavigate)="navigate($event)"></app-menu-collapsed>
+</ng-template>
+
+<!-- List item for mobile mode -->
+<ng-template #mobileListItem let-item="item">
+  <app-menu-mobile [item]="item" (menuNavigate)="navigate($event)"></app-menu-mobile>
+</ng-template>

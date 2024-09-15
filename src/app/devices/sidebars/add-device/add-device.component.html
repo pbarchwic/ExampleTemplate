@@ -1,0 +1,60 @@
+<form [formGroup]="form" (submit)="addDeviceConfirm()" class="h-100">
+  <app-sidebar-content [title]="'assign_device' | translate" [loading]="isLoading">
+    <ng-container sidebar-content-body>
+      <div class="devices">
+        <ng-container *ngIf="devices && devices.length > 0">
+          <div class="devices__label mb-3">
+            {{ 'select_devices' | translate }}
+          </div>
+          <app-form-input class="d-block" [label]="'search_device' | translate" [control]="form.get('search')"></app-form-input>
+          <div class="devices__label mb-3">{{ 'select_devices_list' | translate }}:</div>
+          <app-form-checkbox-list
+            *ngIf="form.get('devices')"
+            class="devices__list mb-3"
+            [controlArray]="form.get('devices')"
+          ></app-form-checkbox-list>
+        </ng-container>
+        <div class="devices__messages">
+          <div *ngIf="devices && !devices.length">
+            <div class="devices__label mb-2">
+              <strong>
+                {{ 'no_devices_found' | translate }}
+              </strong>
+            </div>
+            <div class="devices__label">
+              {{ 'nothing_to_add' | translate }}
+            </div>
+          </div>
+          <app-alert *ngIf="noSearchResults" type="info" class="d-block mb-3">
+            {{ 'no_searching_devices' | translate }}
+          </app-alert>
+          <app-alert
+            *ngIf="form.get('devices') && form.get('devices').touched && form.get('devices').hasError('minSelectedDevices')"
+            type="danger"
+            class="d-block mb-3"
+          >
+            {{ 'validation_min_selected_devices' | translate }}
+          </app-alert>
+          <app-alert *ngIf="isError" type="danger" class="d-block mb-3">
+            {{ 'something_went_wrong' | translate }}
+            {{ 'try_again' | translate }}
+          </app-alert>
+        </div>
+      </div>
+    </ng-container>
+    <ng-container sidebar-content-footer>
+      <div class="text-right">
+        <button type="button" class="button button--default" (click)="close()">
+          {{ 'cancel' | translate }}
+        </button>
+        <button
+          type="submit"
+          class="button button--primary ml-3"
+          [disabled]="isEmpty || (form.get('devices') && form.get('devices').touched && form.get('devices').hasError('minSelectedDevices'))"
+        >
+          {{ 'add_button' | translate }}
+        </button>
+      </div>
+    </ng-container>
+  </app-sidebar-content>
+</form>

@@ -1,0 +1,14 @@
+<div class="organization-info" (click)="navigate($event, '/')">
+  <app-avatar
+    class="organization-info__picture"
+    [width]="31"
+    [height]="31"
+    [color]="organization?.color"
+    [image]="organization?.logo"
+    [initials]="organization?.initials"
+    [attr.data-cy]="organization?.initials"
+  ></app-avatar>
+  <div class="organization-info__name">
+    {{ organization?.name }}
+  </div>
+</div>

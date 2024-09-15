@@ -1,0 +1,30 @@
+<app-page>
+  <div class="d-flex align-items-center" page-title>
+    <app-avatar
+      class="mr-3"
+      [width]="32"
+      [height]="32"
+      [color]="user.color"
+      [initials]="user.initials"
+    ></app-avatar>
+    <app-page-title
+      [title]="user.displayName"
+    ></app-page-title>
+  </div>
+
+  <ng-container page-actions>
+    <button *ngIf="organizationUserContext.showGrantAccess$ | async" type="button" class="button button--primary" (click)="addPermission()" [appTrackEvent]="{
+      name: eventNames.grantAccess,
+      place: eventPlaces.pageActions,
+      component: eventComponents.button
+    }">
+      {{ 'grant_access' | translate }}
+    </button>
+  </ng-container>
+
+  <ng-container page-body>
+    <app-tabs [tabs]="tabs"></app-tabs>
+    <router-outlet></router-outlet>
+  </ng-container>
+</app-page>
+

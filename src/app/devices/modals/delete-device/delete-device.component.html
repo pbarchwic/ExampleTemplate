@@ -1,0 +1,26 @@
+<app-modal-wrapper [title]="'delete_device' | translate" (closed)="close()" [loading]="isLoading">
+  <ng-container>
+    <p>
+      {{ 'delete_device_question' | translate: { deviceName: device.name } }}
+    </p>
+    <app-alert *ngIf="isError" type="danger">
+      {{ 'something_went_wrong' | translate }}
+      {{ 'try_again' | translate }}
+    </app-alert>
+    <div class="text-right mt-4">
+      <button class="button button--default mr-2" (click)="close()">
+        {{ 'cancel' | translate }}
+      </button>
+      <button
+        class="button button--danger"
+        (click)="deleteDevice()"
+        [appTrackEvent]="{
+          name: eventNames.apiDeleteDevices,
+          component: eventComponents.button
+        }"
+      >
+        {{ 'delete' | translate }}
+      </button>
+    </div>
+  </ng-container>
+</app-modal-wrapper>

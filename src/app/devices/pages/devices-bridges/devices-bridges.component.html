@@ -1,0 +1,113 @@
+<app-table-wrapper>
+  <table class="table mb-3 table--nowrap" *ngIf="bridges && bridges.length">
+    <colgroup>
+      <col style="width: auto" />
+      <col style="width: 57px" />
+      <col style="width: 10%" />
+      <col style="width: 30%" />
+      <col style="width: 20%" />
+      <col style="width: 10%" />
+      <col style="width: auto" />
+    </colgroup>
+    <thead>
+      <tr>
+        <!-- temporary hidden -->
+        <!-- <th>
+          <mat-checkbox></mat-checkbox>
+        </th> -->
+        <th>{{ 'name' | translate }}</th>
+        <th></th>
+        <th>{{ 'status' | translate }}</th>
+        <th>{{ 'firmware' | translate }}</th>
+        <th>{{ 'serial_number' | translate }}</th>
+        <th>{{ 'paired_devices' | translate }}</th>
+        <th>{{ 'mac_address' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="getBridges()">
+      <tr *ngFor="let bridge of bridges; trackBy: trackByDeviceId">
+        <!-- temporary hidden -->
+        <!-- <td>
+          <mat-checkbox> </mat-checkbox>
+        </td> -->
+        <td class="device-name" [class.disconnected]="!bridge.statuses.isConnected">
+          <a class="device-name__wrapper" [routerLink]="['/devices/bridge/' + bridge.id | slugUrl]">
+            {{ bridge.name }}
+          </a>
+        </td>
+        <td class="context__menu">
+          <app-contextual-menu
+            menuName="device_actions"
+            class="d-inline"
+            [items]="permissions.canCurrentUserUnassignDevices ? contextMenu : contextMenuBasic"
+            (action)="contextMenuAction($event, bridge)"
+          ></app-contextual-menu>
+        </td>
+        <td>
+          <span class="status-icon">
+            <mat-icon
+              *ngIf="bridge.statuses.isConnected; else isDisconnected"
+              [svgIcon]="'example_connected'"
+              [matTooltip]="'connected' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+            <ng-template #isDisconnected>
+              <span>
+                <mat-icon
+                  [svgIcon]="'example_disconnected'"
+                  [matTooltip]="'disconnected' | translate"
+                  matTooltipClass="icon-tooltip"
+                  matTooltipPosition="right"
+                >
+                </mat-icon>
+              </span>
+            </ng-template>
+          </span>
+          <span class="status-icon" *ngIf="bridge.statuses.deviceSoftwareUpdateAvailable">
+            <mat-icon
+              [svgIcon]="'example_update'"
+              [matTooltip]="'update_required' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+          </span>
+          <span class="status-icon" *ngIf="bridge.statuses.wiFiSoftwareUpdateAvailable">
+            <mat-icon
+              [svgIcon]="'example_wifi_update'"
+              [matTooltip]="'wifi_update_required' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+            </mat-icon>
+          </span>
+        </td>
+        <td>
+          {{ bridge.firmware || '-' }}
+        </td>
+        <td>
+          {{ bridge.serialNumber || '-' }}
+        </td>
+        <td>
+          {{ bridge.pairedDevices }}
+        </td>
+        <td>
+          {{ bridge.mac || '-' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</app-table-wrapper>
+
+<app-alert *ngIf="isError" type="danger">
+  {{ 'something_went_wrong' | translate }}
+  <a role="button" (click)="refreshBridges()">
+    {{ 'try_again' | translate }}
+  </a>
+</app-alert>
+
+<app-devices-not-found *ngIf="bridges.length == 0 && !isLoading && !isError"></app-devices-not-found>
+
+<mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="4" class="ml-auto mr-auto"></mat-spinner>

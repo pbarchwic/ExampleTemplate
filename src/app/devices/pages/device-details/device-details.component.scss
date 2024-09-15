@@ -1,0 +1,129 @@
+@import './variables';
+
+.device-details {
+  padding: 30px;
+  background-color: #fff;
+
+  .d-block {
+    max-width: 375px;
+  }
+  &__label {
+    display: inline-block;
+    font-weight: 500;
+    margin: 32px 0 16px ;
+    &.status {
+      margin-top: 2px;
+    }
+  }
+
+  &__status {
+    display: flex;
+    flex-wrap: wrap;
+
+    .status-item {
+      margin-right: 24px;
+
+      label {
+        display: block;
+        min-width: 177px;
+        font-weight: 500;
+        font-size: 14px;
+        padding: 8px 16px;
+        margin-bottom: 0;
+        background-color: rgba($color-secondary, 0.05);
+        border-radius: 4px;
+      }
+
+      .paried-device {
+        color: $color-secondary;
+        font-weight: 500;
+
+        &:hover {
+          color: $color-primary;
+          text-decoration: none;
+        }
+      }
+
+      .loader-placeholder {
+        display: inline-block;
+        width: 100px;
+        height: 16px;
+        margin: 9px 18px;
+        opacity: 0.1;
+        background-color: $color-secondary;
+      }
+
+      .description {
+        display: inline-block;
+        padding: 9px 18px;
+        font-size: 14px;
+        .mat-icon {
+          margin-right: 8px;
+          width: 22px;
+          height: 22px;
+        }
+      }
+
+      .material-icons.battery {
+        vertical-align: middle;
+        font-size: 17px;
+        color: $color-danger;
+        height: 20px;
+        &.hight {
+          color: $color-success;
+        }
+        &.none {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .form-footer {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+    min-height: 111px;
+
+    .buttons-wrapper {
+      position: absolute;
+      display: flex;
+      bottom: 0px;
+      right: 0px;
+
+      .button--primary {
+        min-width: 68px;
+        min-height: 41px;
+        flex-shrink: 0;
+      }
+      ::ng-deep {
+        .mat-progress-spinner circle,
+        .mat-spinner circle {
+          stroke: $color-white;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 575px) {
+  .device-details {
+
+    &__label {
+      margin-top: 0px ;
+    }
+
+    &__status {
+
+      .status-item {
+        margin-right: 0;
+        width: 100%;
+      }
+
+      .description {
+        padding-bottom: 12px !important;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+<mat-form-field appearance="fill" [hintLabel]="hint" [ngClass]="{ 'no-label': !label }">
+  <mat-label *ngIf="label">
+    {{ label }}
+  </mat-label>
+  <ng-container [ngSwitch]="type">
+    <input *ngSwitchCase="'input'" [placeholder]="placeholder" [formControl]="control" (blur)="onBlur($event)" matInput />
+    <textarea *ngSwitchCase="'textarea'" [placeholder]="placeholder" [formControl]="control" (blur)="onBlur($event)" matInput></textarea>
+  </ng-container>
+  <span *ngIf="prefix" matPrefix>
+    {{ prefix }}
+  </span>
+  <mat-hint [hidden]="!maxLength" align="end"> {{ control.value?.length || 0 }}/{{ maxLength }} </mat-hint>
+  <mat-error *ngIf="control.hasError('required')">
+    {{ 'validation_required' | translate }}
+  </mat-error>
+  <mat-error *ngIf="control.hasError('email')">
+    {{ 'validation_email' | translate }}
+  </mat-error>
+  <mat-error *ngIf="control.hasError('minlength')">
+    {{ 'validation_min_length' | translate: { length: minLength } }}
+  </mat-error>
+  <mat-error *ngIf="control.hasError('maxlength')">
+    {{ 'validation_max_length' | translate: { length: maxLength } }}
+  </mat-error>
+  <mat-error *ngIf="control.hasError('organizationNameIsWrong')">
+    {{ 'validation_organization_name_match' | translate }}
+  </mat-error>
+</mat-form-field>

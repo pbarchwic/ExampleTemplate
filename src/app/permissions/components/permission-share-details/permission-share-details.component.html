@@ -1,0 +1,55 @@
+<div class="permission-details" *ngIf="data && data.accessLevel !== accessLevels.Owner">
+  <div class="item">
+    <div class="item__name">{{ 'access_level' | translate }}</div>
+    <div class="item__value">{{ accessLevels[data.accessLevel] | translate }}</div>
+  </div>
+  <div class="item" *ngIf="isLock">
+    <div class="item__name">{{ 'remote_unlock' | translate }}</div>
+    <div class="item__value" *ngIf="!isLoading">{{ (data.remoteAccessDisabled ? 'off' : 'on') | translate }}</div>
+    <div class="item__value" *ngIf="isLoading"><span class="loader-placeholder loader-placeholder--remote-unlock"></span></div>
+  </div>
+  <div class="item">
+    <div class="item__name">{{ 'access_type' | translate }}</div>
+    <div class="item__value">
+      <span class="access-type__indicator" [ngClass]="'access-type__indicator--' + className"></span>
+      {{ accessTypesDisplayName[data.accessType] | translate }}
+    </div>
+  </div>
+  <div class="item item__row" *ngIf="isTimeRestricted || isRecurring">
+    <div class="item__col">
+      <div class="item__name">{{ 'from' | translate }}</div>
+      <div class="item__value" *ngIf="!isLoading && data.timeDetails.startDate">{{ data.timeDetails.startDate | dateFormat }}</div>
+      <div class="item__value" *ngIf="isLoading"><span class="loader-placeholder loader-placeholder--date"></span></div>
+    </div>
+    <div class="item__col">
+      <div class="item__name">{{ 'to' | translate }}</div>
+      <div class="item__value" *ngIf="!isLoading && data.timeDetails.endDate">{{ data.timeDetails.endDate | dateFormat }}</div>
+      <div class="item__value" *ngIf="isLoading"><span class="loader-placeholder loader-placeholder--date"></span></div>
+    </div>
+  </div>
+  <div class="item" *ngIf="isRecurring">
+    <div class="item__name">{{ 'days' | translate }}</div>
+    <app-daypicker
+      *ngIf="!isLoading && data.daysDetails && data.daysDetails.days.length > 0"
+      [isReadOnly]="true"
+      [daysList]="data.daysDetails.days"
+    ></app-daypicker>
+    <div class="item__value" *ngIf="isLoading"><span class="loader-placeholder loader-placeholder--days"></span></div>
+  </div>
+  <div class="item item__row" *ngIf="isRecurring">
+    <div class="item__col">
+      <div class="item__name">{{ 'daily_start_time' | translate }}</div>
+      <div class="item__value" *ngIf="!isLoading && data.daysDetails && data.daysDetails.dailyStartTime">
+        {{ data.daysDetails.dailyStartTime }}
+      </div>
+      <div class="item__value" *ngIf="isLoading"><span class="loader-placeholder loader-placeholder--time"></span></div>
+    </div>
+    <div class="item__col" *ngIf="isRecurring">
+      <div class="item__name">{{ 'daily_end_time' | translate }}</div>
+      <div class="item__value" *ngIf="!isLoading && data.daysDetails && data.daysDetails.dailyEndTime">
+        {{ data.daysDetails.dailyEndTime }}
+      </div>
+      <div class="item__value" *ngIf="isLoading"><span class="loader-placeholder loader-placeholder--time"></span></div>
+    </div>
+  </div>
+</div>

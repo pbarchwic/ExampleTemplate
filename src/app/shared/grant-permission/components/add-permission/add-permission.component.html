@@ -1,0 +1,178 @@
+<form class="h-100" (submit)="submit()">
+  <app-sidebar-content [title]="(isEditMode ? 'edit_access' : 'grant_access') | translate" [loading]="isLoading">
+    <ng-container *ngIf="form && !isCriticalError" [ngTemplateOutlet]="formControls" sidebar-content-body></ng-container>
+    <ng-container sidebar-content-footer>
+      <app-alert *ngIf="isError || isCriticalError" type="danger" class="d-block mb-3">
+        {{ 'something_went_wrong' | translate }}
+        {{ 'try_again' | translate }}
+      </app-alert>
+
+      <ng-container *ngIf="form && !isCriticalError" [ngTemplateOutlet]="formActions"></ng-container>
+    </ng-container>
+  </app-sidebar-content>
+
+  <ng-template #formControls>
+    <div [formGroup]="form">
+      <app-form-autocomplete
+        [options]="usersOptions"
+        [readOnly]="data.user"
+        [selectedItem]="
+          data.user
+            ? {
+                name: data.user.displayName,
+                helperData: data.user.email
+              }
+            : null
+        "
+        [icon]="'example_user'"
+        [searchBy]="['name', 'helperData']"
+        [control]="userControl"
+        [label]="'user_name' | translate"
+        (selected)="onAutocompleteSelection('user')"
+        (focusOut)="mapNewUser($event)"
+      ></app-form-autocomplete>
+      <app-form-autocomplete
+        [options]="devicesOptions"
+        [readOnly]="data.device"
+        [selectedItem]="
+          data.device
+            ? {
+                name: data.device.name,
+                helperData: data.device.type == 1 ? 'bridge' : 'lock'
+              }
+            : null
+        "
+        [icon]="'example_device'"
+        [control]="deviceControl"
+        [label]="'device_name' | translate"
+        (selected)="onAutocompleteSelection('device')"
+      ></app-form-autocomplete>
+      <div class="form__header">
+        {{ 'access_details' | translate }}
+      </div>
+      <app-form-select
+        [control]="form.get('accessDetails.accessLevel')"
+        [label]="'access_level' | translate"
+        [data]="[
+          { value: 0, viewValue: 'guest' },
+          { value: 1, viewValue: 'admin' }
+        ]"
+      ></app-form-select>
+      <app-form-select
+        *ngIf="form.get('accessDetails.remoteAccessDisabled')"
+        [control]="form.get('accessDetails.remoteAccessDisabled')"
+        [label]="'remote_unlock' | translate"
+        [data]="[
+          { value: false, viewValue: 'on' },
+          { value: true, viewValue: 'off' }
+        ]"
+      ></app-form-select>
+      <app-form-select
+        [control]="form.get('accessDetails.accessType')"
+        [label]="'access_type' | translate"
+        [data]="[
+          { value: 0, viewValue: 'permanet', className: 'permanet' },
+          { value: 1, viewValue: 'time_restricted', className: 'time_restricted' },
+          { value: 2, viewValue: 'custom', className: 'custom' }
+        ]"
+      ></app-form-select>
+      <div class="form__section mb-4" *ngIf="form.get('accessDetails.timeDetails')">
+        <div class="form__subheader">
+          {{ (isCustomAccessType ? 'custom_details' : 'time_restricted_details') | translate }}
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <app-form-datepicker
+              [label]="'start_date' | translate"
+              [control]="form.get('accessDetails.timeDetails.startDate')"
+              [minDate]="newDate()"
+              (dateChange)="dateChange('start')"
+            ></app-form-datepicker>
+          </div>
+          <div class="col-6">
+            <app-form-timepicker
+              [label]="'start_time' | translate"
+              [control]="form.get('accessDetails.timeDetails.startTime')"
+              (change)="timeChanged()"
+            ></app-form-timepicker>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-6">
+            <app-form-datepicker
+              [label]="'end_date' | translate"
+              [control]="form.get('accessDetails.timeDetails.endDate')"
+              [minDate]="newDate()"
+              (dateChange)="dateChange('end')"
+            ></app-form-datepicker>
+          </div>
+          <div class="col-6">
+            <app-form-timepicker
+              [label]="'end_time' | translate"
+              [control]="form.get('accessDetails.timeDetails.endTime')"
+            ></app-form-timepicker>
+          </div>
+        </div>
+        <app-alert type="warning" class="d-block pb-3" *ngIf="form.get('accessDetails.timeDetails').hasError('startDateGreaterThanEnd')">
+          {{ 'validation_start_date_greater_than_end' | translate }}
+        </app-alert>
+        <div *ngIf="form.get('accessDetails.daysDetails')">
+          <div class="form__subheader">
+            {{ 'days' | translate }}
+          </div>
+          <div class="row form__row--margin">
+            <div class="col-12">
+              <app-daypicker [control]="form.get('accessDetails.daysDetails.days')"></app-daypicker>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-6">
+              <app-form-timepicker
+                [label]="'daily_start_time' | translate"
+                [control]="form.get('accessDetails.daysDetails.dailyStartTime')"
+              ></app-form-timepicker>
+            </div>
+            <div class="col-6">
+              <app-form-timepicker
+                [label]="'daily_end_time' | translate"
+                [control]="form.get('accessDetails.daysDetails.dailyEndTime')"
+              ></app-form-timepicker>
+            </div>
+          </div>
+          <app-alert type="warning" class="d-block pb-3" *ngIf="form.get('accessDetails.daysDetails').hasError('startTimeGreaterThanEnd')">
+            {{ 'validation_start_time_greater_than_end' | translate }}
+          </app-alert>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #formActions>
+    <app-alert *ngIf="isNewUser" [hideIcon]="true" [bolded]="true" type="info" class="d-block mb-4">
+      {{ 'permissions_user_not_found' | translate }}
+    </app-alert>
+    <div class="text-right">
+      <button type="button" class="button button--default" (click)="close()">
+        {{ 'cancel' | translate }}
+      </button>
+      <button *ngIf="isEditMode" type="button" class="button button--outline-danger ml-3" (click)="deleteAccess()">
+        {{ 'delete' | translate }}
+      </button>
+      <button
+        type="submit"
+        class="button button--primary ml-3"
+        [appTrackEvent]="{
+          name: !isEditMode ? eventNames.apiGrantAccess : eventNames.apiEditAccess,
+          component: eventComponents.button
+        }"
+      >
+        <ng-container *ngIf="!isEditMode">
+          {{ 'grant_access' | translate }}
+        </ng-container>
+        <ng-container *ngIf="isEditMode">
+          {{ 'apply_button' | translate }}
+        </ng-container>
+      </button>
+    </div>
+  </ng-template>
+</form>

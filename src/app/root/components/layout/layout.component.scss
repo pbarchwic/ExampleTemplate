@@ -1,0 +1,42 @@
+@import 'variables';
+@import 'mixins';
+
+.layout {
+  padding-top: 50px;
+
+  &__toolbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 2;
+  }
+
+  &__sidenav {
+    position: fixed;
+    z-index: 1000;
+    display: flex;
+    top: 50px;
+    left: 0;
+    height: calc(100vh - 50px);
+  }
+
+  &__body {
+    &--full-width {
+      padding-left: 212px;
+    }
+
+    &--collapsed {
+      padding-left: 56px;
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .layout {
+    &__sidenav {
+      width: 100%;
+      overflow: auto;
+    }
+  }
+}

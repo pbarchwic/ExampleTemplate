@@ -1,0 +1,30 @@
+<div *ngIf="readOnly">
+  <div class="autocomplete-readonly">
+    <mat-icon [svgIcon]="icon" class="autocomplete-readonly__icon"></mat-icon>
+    <div class="autocomplete-readonly__data">
+      <div class="autocomplete-readonly__primary">{{ selectedItem.name }}</div>
+      <div class="autocomplete-readonly__secondary">{{ selectedItem.helperData | translate }}</div>
+    </div>
+  </div>
+</div>
+<div *ngIf="!readOnly">
+  <div class="autocomplete">
+    <mat-icon *ngIf="icon" [svgIcon]="icon" class="autocomplete__icon"></mat-icon>
+    <mat-form-field class="mat-form-field" appearance="fill">
+      <mat-label *ngIf="label">
+        {{ getLabel() | translate }}
+      </mat-label>
+      <input type="text" matInput [formControl]="control" [matAutocomplete]="auto" data-lpignore="true" (blur)="onBlur()" />
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn" (optionSelected)="optionSelected($event)">
+        <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+          <div class="autocomplete__name" *ngIf="option.name">
+            {{ option.name | translate }}
+          </div>
+          <div class="autocomplete__helper" *ngIf="option.helperData">
+            {{ option.helperData | translate }}
+          </div>
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+  </div>
+</div>

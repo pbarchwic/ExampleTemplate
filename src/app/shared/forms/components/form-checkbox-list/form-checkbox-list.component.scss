@@ -1,0 +1,11 @@
+@import 'variables';
+
+.checkbox-list {
+  margin: 0;
+  padding: 0;
+
+  &__item {
+    margin-bottom: 6px;
+    list-style: none;
+  }
+}

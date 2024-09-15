@@ -1,0 +1,16 @@
+<div class="modal">
+  <div class="modal__header">
+    <h3 class="modal__title">
+      {{ title }}
+    </h3>
+    <button *ngIf="!hideCloseButton" class="modal__close button--clear" (click)="closed.emit()">
+      <mat-icon svgIcon="example_close"></mat-icon>
+    </button>
+  </div>
+  <div class="modal__loader" *ngIf="loading">
+    <mat-spinner [diameter]="50" [strokeWidth]="4"></mat-spinner>
+  </div>
+  <div class="modal__body">
+    <ng-content></ng-content>
+  </div>
+</div>

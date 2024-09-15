@@ -1,0 +1,16 @@
+<div [class]="'alert ' + 'alert--' + type" [ngClass]="{
+  'alert--bolded': bolded
+}">
+  <div *ngIf="!hideIcon" class="alert__icon" [ngSwitch]="type">
+    <mat-icon *ngSwitchCase="'danger'">error_outline</mat-icon>
+    <mat-icon *ngSwitchCase="'info'">info_outline</mat-icon>
+    <mat-icon *ngSwitchCase="'success'">check_outline</mat-icon>
+    <mat-icon *ngSwitchCase="'warning'">warning</mat-icon>
+  </div>
+  <div class="alert__content">
+    <ng-content></ng-content>
+  </div>
+  <button *ngIf="closable" type="button" class="alert__close button button--clear" (click)="closed.emit()">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>

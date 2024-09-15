@@ -1,0 +1,26 @@
+@import 'variables';
+
+.form {
+  &__header {
+    margin-top: 8px;
+    margin-bottom: 16px;
+    font-size: 14px;
+    font-weight: 300;
+    color: $color-secondary;
+  }
+  &__section {
+    border-radius: 4px;
+    box-shadow: 0 0 14px 0 rgba(0, 0, 0, 0.07);
+    background-color: $color-white;
+    padding: 16px 16px 0;
+  }
+  &__subheader {
+    font-size: 14px;
+    font-weight: 300;
+    color: $color-secondary;
+    margin-bottom: 16px;
+  }
+  &__row--margin {
+    margin-bottom: 16px;
+  }
+}

@@ -1,0 +1,48 @@
+<app-table-wrapper>
+  <table class="table table--nowrap activity">
+    <ng-container *ngFor="let activity of activities; trackBy: trackByIndex">
+      <thead class="clear mt-2">
+        <tr>
+          <th colspan="3">
+            <strong *ngIf="isToday(activity.date)">
+              {{ 'today' | translate }}
+            </strong>
+            <strong *ngIf="isYesterday(activity.date)">
+              {{ 'yesterday' | translate }}
+            </strong>
+            <span *ngIf="!isToday(activity.date) && !isYesterday(activity.date)">
+              {{ activity.date | dateFormat }}
+            </span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let event of activity.events; trackBy: trackByIndex">
+          <td class="activity__time">
+            {{ event.date | timeFormat }}
+          </td>
+          <td *ngIf="event.title" class="activity__name pr-2 pl-2">
+            <a
+              class="activity__link"
+              [routerLink]="['/devices/' + (event.deviceType === 1 ? 'bridge/' : 'lock/') + event.deviceId | slugUrl]"
+            >
+              <strong>
+                {{ event.title }}
+              </strong>
+            </a>
+          </td>
+          <td class="activity__event pl-0">
+            <mat-icon [svgIcon]="getEventIcon(event.event)" class="mr-1"></mat-icon>
+            {{ 'enum_deviceEvent_' + event.event | translate }}
+            <ng-container *ngIf="event.by">
+              {{ 'by' | translate }}
+              <a class="activity__link" [routerLink]="['/users/' + event.userId | slugUrl]"
+                ><strong>{{ event.by }}</strong></a
+              >
+            </ng-container>
+          </td>
+        </tr>
+      </tbody>
+    </ng-container>
+  </table>
+</app-table-wrapper>

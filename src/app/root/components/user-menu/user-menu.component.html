@@ -1,0 +1,75 @@
+<div class="menu">
+  <button
+    #userMenuToggler="matMenuTrigger"
+    type="button"
+    class="button button--clear menu__toggler"
+    [ngClass]="{ 'menu__toggler--opened': userMenuToggler.menuOpen }"
+    [matMenuTriggerFor]="userMenu"
+    [appTrackEvent]="{
+      name: eventNames.userMenu,
+      component: eventComponents.button
+    }"
+  >
+    <app-avatar *ngIf="!showClose" [width]="56" [height]="50" [radius]="0" [color]="user?.color" [initials]="user?.initials"></app-avatar>
+
+    <mat-icon *ngIf="showClose" svgIcon="example_close"></mat-icon>
+  </button>
+
+  <mat-menu #userMenu="matMenu" class="menu__panel" backdropClass="user__menu">
+    <div mat-menu-item disabled>
+      <div class="mat-menu-user">
+        <app-avatar
+          class="mat-menu-user-avatar"
+          [width]="32"
+          [height]="32"
+          [color]="user?.color"
+          [initials]="user?.initials"
+          [attr.data-cy]="user?.color"
+        ></app-avatar>
+        <div class="mat-menu-user-details">
+          {{ user.username }}
+          <small>
+            {{ user.email }}
+          </small>
+        </div>
+      </div>
+    </div>
+    <a
+      [href]="'link_help' | translate"
+      target="_blank"
+      [appTrackEvent]="{
+        name: eventNames.userMenuHelp,
+        component: eventComponents.button
+      }"
+      mat-menu-item
+    >
+      <span>{{ 'help' | translate }}</span>
+    </a>
+    <a
+      [href]="'link_privacy_policy' | translate"
+      target="_blank"
+      [appTrackEvent]="{
+        name: eventNames.userMenuPrivacyPolicy,
+        component: eventComponents.button
+      }"
+      mat-menu-item
+    >
+      <span>{{ 'privacy_policy' | translate }}</span>
+    </a>
+    <a
+      [href]="'link_terms_and_conditions' | translate"
+      target="_blank"
+      [appTrackEvent]="{
+        name: eventNames.userMenuTermsAndConditions,
+        component: eventComponents.button
+      }"
+      mat-menu-item
+    >
+      <span>{{ 'terms_and_conditions' | translate }}</span>
+    </a>
+    <button (click)="logout()" mat-menu-item>
+      <mat-icon svgIcon="example_log-out"></mat-icon>
+      <span>{{ 'log_out' | translate }}</span>
+    </button>
+  </mat-menu>
+</div>

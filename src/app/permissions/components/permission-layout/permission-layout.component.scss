@@ -1,0 +1,14 @@
+::ng-deep .permission-page .page {
+  padding-right: 0px !important;
+  &__header {
+    padding-right: 30px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  ::ng-deep .permission-page .page {
+    &__header {
+      padding-right: 12px;
+    }
+  }
+}

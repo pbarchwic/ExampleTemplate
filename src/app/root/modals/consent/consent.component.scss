@@ -1,0 +1,22 @@
+@import 'variables';
+
+.consent {
+  &__body {
+    font-size: 14px;
+    font-weight: 300;
+    margin-bottom: 16px;
+  }
+  &__links {
+    display: flex;
+    flex-direction: column;
+    a {
+      font-weight: 500;
+      color: $color-secondary;
+      font-size: 14px;
+      &:hover {
+        text-decoration: none;
+        color: $color-primary;
+      }
+    }
+  }
+}

@@ -1,0 +1,119 @@
+@import 'variables';
+
+.menu {
+  &__toggler {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 50px;
+    background-color: $color-white;
+    color: $color-black;
+    cursor: pointer;
+    opacity: 0.85;
+
+    &:hover,
+    &--opened {
+      opacity: 1;
+    }
+  }
+}
+
+::ng-deep {
+  .cdk-overlay-container {
+    z-index: 9999 !important;
+  }
+  .cdk-overlay-pane {
+    .menu__panel.mat-menu-panel {
+      min-width: 240px;
+      border-radius: 0;
+      box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+
+      .mat-menu-content {
+        padding-top: 0;
+        padding-bottom: 0;
+      }
+
+      .mat-menu-item {
+        height: auto;
+        padding-left: 30px;
+        padding-right: 30px;
+        font-size: 15px;
+        font-weight: 300;
+        color: $color-secondary;
+
+        &:hover {
+          background-color: $color-gray;
+          text-decoration: none;
+        }
+      }
+
+      .mat-menu-user {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        height: 78px;
+        margin-left: -30px;
+        margin-right: -30px;
+        padding-left: 30px;
+        padding-right: 30px;
+
+        &-avatar {
+          margin-right: 15px;
+        }
+
+        &-details {
+          height: auto;
+          line-height: 1.2;
+          color: $color-secondary;
+
+          > small {
+            display: block;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 576px) {
+  ::ng-deep {
+    .cdk-overlay-pane {
+      .menu__panel.mat-menu-panel {
+        .mat-menu-item {
+          &:not(:last-child) {
+            border-bottom: 1px solid $color-gray-200;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 575px) {
+  ::ng-deep {
+    .user__menu + * .cdk-overlay-pane {
+      top: 50px !important;
+      width: 100%;
+      height: 100%;
+
+      .menu__panel.mat-menu-panel {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        max-height: calc(100vh - 50px);
+
+        .mat-menu-user {
+          background-color: $color-gray;
+        }
+        a.mat-menu-item {
+          padding-left: 77px;
+        }
+        button .mat-icon {
+          margin-right: 23px;
+        }
+      }
+    }
+  }
+}

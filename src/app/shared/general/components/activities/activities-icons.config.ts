@@ -1,0 +1,28 @@
+import { DeviceEventType } from "@app/core";
+
+export const activitiesIconsConfig = {
+  [DeviceEventType.LockedViaBluetooth]: "example_locked",
+  [DeviceEventType.LockedViaButton]: "example_locked",
+  [DeviceEventType.LockedAuto]: "example_locked",
+  [DeviceEventType.LockedManual]: "example_locked",
+  [DeviceEventType.UnlockedViaBluetooth]: "example_unlocked",
+  [DeviceEventType.UnlockedViaButton]: "example_unlocked",
+  [DeviceEventType.UnlockedAuto]: "example_unlocked",
+  [DeviceEventType.UnlockedManual]: "example_unlocked",
+  [DeviceEventType.PartiallyOpenViaBluetooth]: "example_partially_open",
+  [DeviceEventType.PartiallyOpenViaButton]: "example_partially_open",
+  [DeviceEventType.PartiallyOpenAuto]: "example_partially_open",
+  [DeviceEventType.PartiallyOpenManual]: "example_partially_open",
+  [DeviceEventType.SpringPulledViaBluetooth]: "example_pulled_spring",
+  [DeviceEventType.SpringPulledViaButton]: "example_pulled_spring",
+  [DeviceEventType.SpringPulledAuto]: "example_pulled_spring",
+  [DeviceEventType.SpringPulledManual]: "example_pulled_spring",
+  [DeviceEventType.Jammed]: "example_warning",
+  [DeviceEventType.PowerOff]: "example_power",
+  [DeviceEventType.PowerOn]: "example_power",
+  [DeviceEventType.Calibration]: "example_calibrate",
+  [DeviceEventType.BatteryCharging]: "example_charging",
+  [DeviceEventType.BatteryStoppedCharging]: "example_charging",
+  [DeviceEventType.FirmwareUpdatedByBridge]: "example_update",
+  [DeviceEventType.FirmwareUpdatedByMobile]: "example_update",
+};

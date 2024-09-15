@@ -1,0 +1,44 @@
+@import './variables';
+
+.user {
+  &__name {
+    font-weight: 500;
+    min-width: 160px;
+
+    &-wrapper {
+      display: block;
+      max-width: 400px;
+      min-width: 160px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: $color-secondary;
+      text-decoration: none !important;
+
+      &:hover {
+        cursor: pointer;
+
+        &:not(.pending) span {
+          color: $color-primary;
+        }
+      }
+    }
+
+    &__email {
+      min-width: 160px;
+
+      &-wrapper {
+        max-width: 400px;
+        min-width: 160px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+  }
+  &:hover {
+    .user__name-wrapper {
+      color: $color-primary;
+    }
+  }
+}

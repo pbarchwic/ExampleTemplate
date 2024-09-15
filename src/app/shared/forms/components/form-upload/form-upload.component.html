@@ -1,0 +1,74 @@
+<div class="upload">
+  <label
+    class="upload__field"
+    tabindex="0"
+    [class.invalid]="!control.dirty && control.touched && control.invalid"
+    [attr.for]="id"
+    (blur)="control.markAsTouched()"
+    (dropped)="onChange($event)"
+    (keyup.enter)="input.click()"
+    appFileDrop
+  >
+    <div class="upload__header">
+      <div class="upload__label">
+        {{ label }}
+      </div>
+      <div class="upload__actions">
+        <button *ngIf="!isEmpty" type="button" class="button button--clear text-danger" (click)="clear()">
+          <mat-icon>delete_outline</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div class="upload__body">
+      <div class="upload__preview">
+        <mat-icon *ngIf="isEmpty" svgIcon="example_image"></mat-icon>
+        <img *ngIf="!isEmpty" [src]="control.value[0].preview | safeUrl" />
+      </div>
+      <div class="upload__caption">
+        <div class="upload__placeholder" [innerHTML]="'form_upload_placeholder' | translate"></div>
+        <div class="upload__hint">
+          {{ allowedExtensions }}
+          {{ 'max' | translate }}
+          {{ maxFileSize }}
+        </div>
+      </div>
+    </div>
+    <input
+      #input
+      type="file"
+      [attr.id]="id"
+      [attr.accept]="allowedExtensions"
+      (change)="onChange($event.srcElement.files)"
+      hidden
+    />
+  </label>
+  <div class="upload__messages">
+    <div *ngIf="control.touched && control.hasError('required')" class="upload__error">
+      {{ 'validation_required' | translate }}
+    </div>
+    <div *ngIf="control.hasError('maxFiles')" class="upload__error">
+      {{ 'validation_max_files' | translate : { maxFiles: control.maxFiles } }}
+    </div>
+    <div *ngIf="control.hasError('maxFileSize')" class="upload__error">
+      {{ 'validation_max_file_size' | translate : { maxFileSize: maxFileSize } }}
+    </div>
+    <div *ngIf="control.hasError('allowedExtensions')" class="upload__error">
+      {{ 'validation_allowed_extensions' | translate : { allowedExtensions: allowedExtensions } }}
+    </div>
+  </div>
+</div>
+
+<app-alert type="warning" *ngIf="control.preInvalid" [closable]="true" (closed)="control.clearPreValidate()">
+  {{ 'validation_upload_invalid' | translate }}
+  <ul class="m-0">
+    <li *ngIf="control.hasPreError('maxFiles')">
+      {{ 'validation_max_files' | translate : { maxFiles: control.maxFiles } }}
+    </li>
+    <li *ngIf="control.hasPreError('maxFileSize')">
+      {{ 'validation_max_file_size' | translate : { maxFileSize: maxFileSize } }}
+    </li>
+    <li *ngIf="control.hasPreError('allowedExtensions')">
+      {{ 'validation_allowed_extensions' | translate : { allowedExtensions: allowedExtensions } }}
+    </li>
+  </ul>
+</app-alert>

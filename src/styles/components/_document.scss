@@ -1,0 +1,11 @@
+html {
+  height: 100%;
+}
+
+body {
+  min-height: 100%;
+  height: auto;
+  margin: 0;
+  font-family: $font-primary;
+  background-color: $color-gray-200;
+}

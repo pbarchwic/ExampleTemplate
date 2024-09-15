@@ -1,0 +1,14 @@
+<div class="days">
+  <button
+    *ngFor="let day of days"
+    type="button"
+    class="day button--clear"
+    [ngClass]="{
+      'day--readOnly': isReadOnly,
+      'day--selected': isSelected(day)
+    }"
+    (click)="onClick(day)"
+  >
+    {{ dayDisplayName[day] | translate }}
+  </button>
+</div>

@@ -1,0 +1,43 @@
+<app-add-administrators (addedAdmin)="addNewAdmin($event)"></app-add-administrators>
+<app-table-wrapper>
+  <table class="table mb-3 table--nowrap" *ngIf="users && users.length">
+    <thead>
+      <tr>
+        <th>{{ 'user_name' | translate }}</th>
+        <th></th>
+        <th>{{ 'user_email' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="getUsers()">
+      <tr *ngFor="let user of users" class="user">
+        <td class="user__name" [class.pending]="!user.status">
+          <a [routerLink]="['/users/' + user.id | slugUrl]" class="user__name-wrapper">
+            {{ user.displayName }}
+          </a>
+        </td>
+        <td class="context__menu">
+          <app-contextual-menu
+            *ngIf="!user.isOwner"
+            class="d-inline"
+            menuName="admin_actions"
+            [items]="contextMenu"
+            (action)="contextMenuAction($event, user)"
+          ></app-contextual-menu>
+        </td>
+        <td class="user__email">
+          <div class="user__email-wrapper">
+            {{ user.email }}
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</app-table-wrapper>
+
+<app-alert *ngIf="isError" type="danger">
+  {{ 'something_went_wrong' | translate }}
+</app-alert>
+
+<app-users-not-found *ngIf="users.length == 0 && !isLoading && !isError"></app-users-not-found>
+
+<mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="4" class="ml-auto mr-auto"></mat-spinner>

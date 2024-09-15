@@ -1,0 +1,80 @@
+@import 'variables';
+
+.permission-details {
+  padding: 16px;
+  min-width: 208px;
+  border-radius: 4px;
+  box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.15);
+  background-color: $color-white;
+  display: flex;
+  flex-direction: column;
+
+  .item {
+    &:not(:last-child) {
+      margin-bottom: 16px;
+    }
+    &__name {
+      font-size: 10px;
+      font-weight: 500;
+      color: $color-secondary;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+
+    &__value {
+      font-size: 14px;
+      font-weight: 300;
+      color: $color-secondary;
+
+      .access-type__indicator {
+        width: 12px;
+        height: 12px;
+        display: inline-block;
+        margin-right: 4px;
+        margin-bottom: -1px;
+        &--permanet {
+          background-color: $color-permission-permanent;
+        }
+        &--timerestricted {
+          background-color: $color-permission-time;
+        }
+        &--custom {
+          opacity: 0.8;
+          background-color: $color-permission-custom;
+        }
+      }
+    }
+
+    &__row {
+      display: flex;
+      flex-direction: row;
+    }
+    &__col {
+      flex: 1 0 50%;
+      &:first-child {
+        margin-right: 14px;
+      }
+    }
+  }
+
+  .loader-placeholder {
+    display: inline-block;
+    width: 46px;
+    height: 10px;
+    opacity: 0.1;
+    background-color: $color-secondary;
+    &--remote-unlock {
+      width: 17px;
+    }
+    &--date {
+      width: 73px;
+    }
+    &--days {
+      width: 100%;
+    }
+    &--time {
+      width: 31px;
+    }
+  }
+}

@@ -1,0 +1,10 @@
+<mat-checkbox [ngModel]="control.value.checked" [hidden]="control.value.hidden" (change)="onChange($event, control)">
+  <div class="label">
+    <span class="label__title">
+      {{ control.value.title }}
+    </span>
+    <span *ngIf="control.value.subtitle" class="label__subtitle">
+      {{ control.value.subtitle }}
+    </span>
+  </div>
+</mat-checkbox>

@@ -1,0 +1,71 @@
+<app-table-wrapper>
+  <table class="table mb-3 table--nowrap" *ngIf="users && users.length">
+    <thead>
+      <tr>
+        <!-- temporary hidden -->
+        <!-- <th>
+          <mat-checkbox></mat-checkbox>
+        </th> -->
+        <th>{{ 'user_name' | translate }}</th>
+        <th></th>
+        <th>{{ 'user_email' | translate }}</th>
+        <th>{{ 'roles' | translate }}</th>
+        <th>{{ 'registered' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody infiniteScroll [infiniteScrollDistance]="2" [infiniteScrollThrottle]="50" (scrolled)="getUsers()">
+      <tr *ngFor="let user of users" class="user">
+        <!-- temporary hidden -->
+        <!-- <td class="user__checkbox">
+          <mat-checkbox></mat-checkbox>
+        </td> -->
+        <td class="user__name" [class.pending]="!user.status">
+          <a class="user__name-wrapper" [routerLink]="['/users/' + user.id | slugUrl]">
+            <span
+              [matTooltipDisabled]="user.status > 0"
+              [matTooltip]="'pending' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+              {{ user.displayName }}
+            </span>
+          </a>
+        </td>
+        <td class="context__menu">
+          <app-contextual-menu
+            class="d-inline"
+            menuName="user_actions"
+            [items]="user.isOwner ? contextEditMenu : contextMenu"
+            (action)="contextMenuAction($event, user)"
+          ></app-contextual-menu>
+        </td>
+        <td class="user__email">
+          <div class="user__email-wrapper">
+            {{ user.email }}
+          </div>
+        </td>
+        <td class="user__role" #userRoleTd>
+          <div class="user__role-wrapper">
+            <span *ngFor="let userRole of user.roles" class="role"> {{ 'role_' + userRole.toLowerCase() | translate }} </span>
+          </div>
+          <div class="user__role-counter" *ngIf="!!user.hiddenRoles && user.hiddenRoles.length > 0">
+            <span [matTooltip]="user.hiddenRoles.join('\n')" matTooltipClass="user__role-tooltip" matTooltipPosition="right"
+              >+{{ user.hiddenRoles.length }}</span
+            >
+          </div>
+        </td>
+        <td class="user__registered">
+          {{ user.registrationDate ? (user.registrationDate | date: 'dd/MM/yyyy') : '-' }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</app-table-wrapper>
+
+<app-alert *ngIf="isError" type="danger">
+  {{ 'something_went_wrong' | translate }}
+</app-alert>
+
+<app-users-not-found *ngIf="users.length == 0 && !isLoading && !isError"></app-users-not-found>
+
+<mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="4" class="ml-auto mr-auto"></mat-spinner>

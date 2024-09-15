@@ -1,0 +1,14 @@
+<mat-form-field appearance="fill" [hintLabel]="hint">
+  <mat-label>{{ label }}</mat-label>
+  <mat-select [formControl]="control">
+    <mat-select-trigger *ngIf="dataItem(control.value)?.className && dataItem(control.value)">
+      <span [class]="dataItem(control.value)?.className">{{ dataItem(control.value)?.viewValue | translate }}</span>
+    </mat-select-trigger>
+    <mat-option *ngFor="let item of data" [value]="item.value" [class]="item.className">
+      {{ item.viewValue | translate }}
+    </mat-option>
+  </mat-select>
+  <mat-error *ngIf="control.hasError('required')">
+    {{ 'validation_required' | translate }}
+  </mat-error>
+</mat-form-field>

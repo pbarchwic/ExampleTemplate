@@ -1,0 +1,31 @@
+@import 'variables';
+
+::ng-deep {
+  .mat-checkbox {
+    .mat-checkbox-inner-container {
+      margin-top: 0;
+      margin-right: 18px;
+    }
+
+    .mat-checkbox-label {
+      line-height: normal;
+      white-space: normal;
+    }
+  }
+}
+
+.label {
+  display: block;
+  color: $color-secondary;
+  line-height: 1;
+
+  &__title {
+    display: block;
+    font-weight: 500;
+  }
+
+  &__subtitle {
+    font-size: 12px;
+    font-weight: 300;
+  }
+}

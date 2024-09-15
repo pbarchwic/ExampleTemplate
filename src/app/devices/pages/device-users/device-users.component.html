@@ -1,0 +1,113 @@
+<app-table-wrapper>
+  <table class="table mb-3 table--nowrap" *ngIf="users && users.length">
+    <thead>
+      <tr>
+        <!-- temporary hidden -->
+        <!-- <th>
+          <mat-checkbox></mat-checkbox>
+        </th> -->
+        <th>{{ 'name' | translate }}</th>
+        <th></th>
+        <th>{{ 'user_email' | translate }}</th>
+        <th>{{ 'access_level' | translate }}</th>
+        <th>{{ 'access_type' | translate }}</th>
+        <th>{{ 'from' | translate }}</th>
+        <th>{{ 'to' | translate }}</th>
+        <th>{{ 'remote_unlock' | translate }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let user of users; trackBy: trackById">
+        <!-- temporary hidden -->
+        <!-- <td>
+          <mat-checkbox>
+          </mat-checkbox>
+        </td> -->
+        <td class="user__name" [class.pending]="user.isPending">
+          <a class="user__name-wrapper" [routerLink]="['/users/' + user.organizationUserId | slugUrl]">
+            <span
+              [matTooltipDisabled]="!user.isPending"
+              [matTooltip]="'pending' | translate"
+              matTooltipClass="icon-tooltip"
+              matTooltipPosition="right"
+            >
+              {{ user.userDisplayName }}
+            </span>
+          </a>
+        </td>
+        <td class="context__menu">
+          <app-contextual-menu
+            menuName="user_actions"
+            class="d-inline"
+            [items]="user.accessLevel === accessLevel.Owner ? contextOwnerMenu : contextMenu"
+            (action)="contextMenuAction($event, user)"
+          ></app-contextual-menu>
+        </td>
+        <td>
+          {{ user.userEmail || '-' }}
+        </td>
+        <td>
+          <ng-container [ngSwitch]="user.accessLevel">
+            <ng-container *ngSwitchCase="0">
+              {{ 'guest' | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="1">
+              {{ 'admin' | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="2">
+              {{ 'owner' | translate }}
+            </ng-container>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container [ngSwitch]="user.accessType">
+            <ng-container *ngSwitchCase="0">
+              {{ 'permanet' | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="1">
+              {{ 'time_restricted' | translate }}
+            </ng-container>
+            <ng-container *ngSwitchCase="2">
+              {{ 'custom' | translate }}
+            </ng-container>
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngIf="user.repeatEvent?.startDate as startDate">
+            {{ startDate | dateTimeFormat }}
+          </ng-container>
+          <ng-container *ngIf="!user.repeatEvent || !user.repeatEvent.startDate">
+            {{ '-' }}
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngIf="user.repeatEvent?.endDate as endDate">
+            {{ endDate | dateTimeFormat }}
+          </ng-container>
+          <ng-container *ngIf="!user.repeatEvent || !user.repeatEvent.endDate">
+            {{ '-' }}
+          </ng-container>
+        </td>
+        <td>
+          <ng-container *ngIf="user.remoteAccessDisabled">
+            {{ 'off' | translate }}
+          </ng-container>
+          <ng-container *ngIf="!user.remoteAccessDisabled">
+            <strong>{{ 'on' | translate }}</strong>
+          </ng-container>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</app-table-wrapper>
+
+<app-alert *ngIf="isError" type="danger">
+  {{ 'something_went_wrong' | translate }}
+  <a role="button" (click)="getUsers()">
+    {{ 'try_again' | translate }}
+  </a>
+</app-alert>
+
+<app-device-users-not-found *ngIf="users && users.length == 0 && !isLoading && !isError"></app-device-users-not-found>
+
+<mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="4" class="ml-auto mr-auto"></mat-spinner>

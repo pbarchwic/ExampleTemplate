@@ -1,0 +1,32 @@
+<app-modal-wrapper [title]="'assign_device' | translate" (closed)="close()" [loading]="isLoading">
+  <div class="add-devices-confirm">
+    <p>
+      {{ 'add_device_confirm' | translate }}
+    </p>
+    <div class="device-users" [formGroup]="form">
+      <app-form-checkbox [control]="form.get('assignUsers')"></app-form-checkbox>
+      <app-alert *ngIf="!form.get('assignUsers').value.checked" type="warning" class="d-block mt-2" [bolded]="true" [hideIcon]="true">
+        {{ 'add_device_confirm_warning' | translate }}
+      </app-alert>
+    </div>
+    <app-alert *ngIf="isError" type="danger">
+      {{ 'something_went_wrong' | translate }}
+      {{ 'try_again' | translate }}
+    </app-alert>
+    <div class="text-right mt-4">
+      <button class="button button--default mr-2" (click)="close()">
+        {{ 'cancel' | translate }}
+      </button>
+      <button
+        class="button button--primary"
+        (click)="confirm()"
+        [appTrackEvent]="{
+          name: eventNames.apiAssignDevices,
+          component: eventComponents.button
+        }"
+      >
+        {{ 'add_button' | translate }}
+      </button>
+    </div>
+  </div>
+</app-modal-wrapper>

@@ -1,0 +1,20 @@
+<button
+  mat-icon-button
+  [matMenuTriggerFor]="menu"
+  #contextMenuToggler="matMenuTrigger"
+  class="menu__toggler button--clear"
+  [ngClass]="{ 'menu__toggler--opened': contextMenuToggler.menuOpen }"
+  matRipple
+>
+  <mat-icon class="menu__icon button--clear">more_vert</mat-icon>
+</button>
+<mat-menu #menu="matMenu" xPosition="before" yPosition="below" class="context-menu">
+  <button
+    mat-menu-item
+    *ngFor="let item of items"
+    [ngClass]="'context-menu__item context-menu__item--' + item.theme"
+    (click)="onAction(item.action)"
+  >
+    <span>{{ item.label | translate }}</span>
+  </button>
+</mat-menu>

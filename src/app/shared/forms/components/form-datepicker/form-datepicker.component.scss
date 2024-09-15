@@ -1,0 +1,84 @@
+@import 'variables';
+
+::ng-deep {
+  .mat-form-field.mat-form-field-type-mat-input {
+    width: 100%;
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+
+    &.mat-form-field-invalid {
+      &.mat-form-field-appearance-fill {
+        .mat-form-field-flex {
+          border-color: $color-error;
+        }
+        .mat-form-field-label {
+          color: $color-error;
+        }
+      }
+    }
+
+    &.mat-focused {
+      &.mat-form-field-appearance-fill {
+        .mat-form-field-flex {
+          padding-left: 13px;
+          border-left-width: 4px;
+          border-color: $color-primary;
+          background-color: rgba($color-secondary, 0.1);
+        }
+
+        .mat-form-field-label {
+          color: $color-secondary;
+        }
+      }
+    }
+    /* Fill appearance */
+    &.mat-form-field-appearance-fill {
+      .mat-form-field-flex {
+        padding: 8px 16px 0 16px;
+        border-radius: 0px 4px 4px 0px;
+        border-left: 1px solid $color-secondary;
+        background-color: rgba($color-secondary, 0.05);
+
+        &:hover {
+          background-color: rgba($color-secondary, 0.1);
+        }
+      }
+
+      .mat-form-field-infix {
+        padding-top: 2px;
+        padding-bottom: 8px;
+      }
+
+      .mat-form-field-suffix {
+        transform: translateY(-4px);
+
+        .mat-icon {
+          width: 22px;
+          height: 22px;
+          transform: translateY(-3px);
+        }
+      }
+
+      .mat-form-field-label {
+        font-weight: 500;
+        color: $color-secondary;
+      }
+
+      .mat-form-field-underline {
+        display: none;
+      }
+
+      .mat-form-field-subscript-wrapper {
+        margin-top: 7px;
+        padding-left: 0;
+        padding-right: 0;
+        font-size: 12px;
+      }
+    }
+  }
+
+  .mat-calendar-body-selected {
+    background-color: $color-secondary;
+  }
+}

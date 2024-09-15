@@ -1,0 +1,28 @@
+@import 'variables';
+
+app-table-wrapper {
+  display: block;
+  margin-top: -24px;
+}
+
+.activity {
+  &__time,
+  &__name {
+    width: 1%;
+  }
+
+  &__name {
+    text-align: right;
+    max-width: 200px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__link {
+    color: $color-secondary;
+    &:hover {
+      text-decoration: none;
+      color: $color-primary;
+      cursor: pointer;
+    }
+  }
+}

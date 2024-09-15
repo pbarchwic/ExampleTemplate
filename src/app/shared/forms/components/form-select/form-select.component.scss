@@ -1,0 +1,134 @@
+@import 'variables';
+
+::ng-deep {
+  // Fix for not visible dropdown menu. This z-index should always be higher than z-index of sidebar
+  .cdk-overlay-container {
+    z-index: 3000 !important;
+  }
+
+  .mat-form-field.mat-form-field-type-mat-select {
+    width: 100%;
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+
+    &.mat-form-field-invalid {
+      &.mat-form-field-appearance-fill {
+        .mat-form-field-flex {
+          border-color: $color-error;
+        }
+        .mat-form-field-label {
+          color: $color-error;
+        }
+      }
+    }
+
+    &.mat-focused {
+      &.mat-form-field-appearance-fill {
+        .mat-form-field-flex {
+          padding-left: 13px;
+          border-left-width: 4px;
+          border-color: $color-primary;
+          background-color: rgba($color-secondary, 0.1);
+        }
+
+        .mat-form-field-label {
+          color: $color-secondary;
+        }
+      }
+    }
+    /* Fill appearance */
+    &.mat-form-field-appearance-fill {
+      .mat-form-field-flex {
+        padding: 8px 16px 0 16px;
+        border-radius: 0px 4px 4px 0px;
+        border-left: 1px solid $color-secondary;
+        background-color: rgba($color-secondary, 0.05);
+
+        &:hover {
+          background-color: rgba($color-secondary, 0.1);
+        }
+      }
+
+      .mat-form-field-infix {
+        padding-top: 2px;
+        padding-bottom: 8px;
+      }
+
+      .mat-form-field-label {
+        font-weight: 500;
+        color: $color-secondary;
+      }
+
+      .mat-form-field-underline {
+        display: none;
+      }
+
+      .mat-form-field-subscript-wrapper {
+        margin-top: 7px;
+        padding-left: 0;
+        padding-right: 0;
+        font-size: 12px;
+      }
+    }
+
+    .mat-select-arrow-wrapper {
+      transform: translateY(-30%);
+
+      .mat-select-arrow {
+        background-image: url(/assets/icons/arrow-down.svg);
+        border: initial;
+        width: 22px;
+        height: 22px;
+        background-size: contain;
+        background-repeat: no-repeat;
+        margin: 0;
+      }
+    }
+  }
+
+  .mat-primary .mat-option.mat-selected:not(.mat-option-disabled) {
+    color: $color-primary;
+  }
+
+  .mat-select-panel .mat-option {
+    color: $color-secondary;
+    &.mat-selected:not(.mat-option-multiple) {
+      background-color: $color-gray;
+    }
+  }
+
+  .mat-select-value-text {
+    .permanet, .time_restricted, .custom {
+      &::before {
+        top: 1px;
+      }
+    }
+  }
+  .permanet, .time_restricted, .custom {
+    &::before {
+      content: '';
+      position: relative;
+      display: inline-block;
+      margin-right: 8px;
+      width: 12px;
+      height: 12px;
+    }
+  }
+
+  .permanet::before {
+    background-color: $color-permission-permanent;
+  }
+
+  .time_restricted::before {
+    background-color: $color-permission-time;
+  }
+
+  .custom::before {
+    opacity: 0.8;
+    background-color: $color-permission-custom;
+  }
+
+
+}
+

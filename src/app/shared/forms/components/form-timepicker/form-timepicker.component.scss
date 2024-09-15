@@ -1,0 +1,98 @@
+@import 'variables';
+
+::ng-deep {
+  mat-form-field.mat-form-field.timepicker {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 6px;
+
+    &.mat-form-field-invalid {
+      &.mat-form-field-appearance-fill {
+        .mat-form-field-flex {
+          border-color: $color-error;
+        }
+        .mat-form-field-label {
+          color: $color-error;
+        }
+      }
+    }
+
+    &.mat-focused {
+      &.mat-form-field-appearance-fill {
+        .mat-form-field-flex {
+          padding-left: 13px;
+          border-left-width: 4px;
+          border-color: $color-primary;
+          background-color: rgba($color-secondary, 0.1);
+        }
+
+        .mat-form-field-label {
+          color: $color-secondary;
+        }
+      }
+    }
+
+    /* Fill appearance */
+    &.mat-form-field-appearance-fill {
+      .mat-form-field-flex {
+        padding: 8px 16px 0 16px;
+        border-radius: 0 4px 4px 0;
+        border-left: 1px solid $color-secondary;
+        background-color: rgba($color-secondary, 0.05);
+
+        &:hover {
+          background-color: rgba($color-secondary, 0.1);
+        }
+      }
+
+      .mat-form-field-infix {
+        padding-top: 2px;
+        padding-bottom: 8px;
+      }
+
+      .mat-form-field-label {
+        font-weight: 500;
+        color: $color-secondary;
+        width: 100%;
+
+        @media screen and (max-width: 375px) {
+          width: 90%;
+        }
+      }
+
+      .mat-form-field-underline {
+        display: none;
+      }
+
+      .mat-form-field-subscript-wrapper {
+        margin-top: 7px;
+        padding-left: 0;
+        padding-right: 0;
+        font-size: 12px;
+      }
+    }
+  }
+
+  mat-error.mat-error {
+    font-weight: 500;
+    color: $color-error;
+  }
+  .timepicker {
+    input[type='time'] {
+      &::-webkit-calendar-picker-indicator {
+        color: rgba(0, 0, 0, 0);
+        opacity: 1;
+        display: block;
+        background: url(/assets/icons/clock.svg) no-repeat;
+        border-width: thin;
+        width: 22px;
+        height: 22px;
+        background-position: center;
+        position: absolute;
+        top: -11px;
+        right: 0px;
+        cursor: pointer;
+      }
+    }
+  }
+}

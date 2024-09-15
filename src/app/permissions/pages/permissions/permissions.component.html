@@ -1,0 +1,23 @@
+<app-permission-matrix
+  *ngIf="devices && devices.length > 0"
+  class="d-block mb-3"
+  [deviceType]="deviceType"
+  [devices]="devices"
+  [deviceType]="deviceType"
+  [users]="users"
+  (loadMore)="getPermissions(deviceType)"
+  (retry)="getPermissions(deviceType, false)"
+></app-permission-matrix>
+
+<div class="permission-states">
+  <app-permission-not-found *ngIf="!isLoading && !isError && devices.length == 0"></app-permission-not-found>
+
+  <mat-spinner *ngIf="isLoading" [diameter]="50" [strokeWidth]="4" class="ml-auto mr-auto"></mat-spinner>
+
+  <app-alert *ngIf="isError" type="danger">
+    {{ 'something_went_wrong' | translate }}
+    <a role="button" (click)="getPermissions(deviceType, false)">
+      {{ 'try_again' | translate }}
+    </a>
+  </app-alert>
+</div>

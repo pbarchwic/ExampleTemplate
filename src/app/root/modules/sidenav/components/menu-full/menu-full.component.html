@@ -1,0 +1,61 @@
+<div [ngClass]="{ 'itemGroup-with-child-selected': hasChildren(item) && displayChildren(item) }">
+  <mat-list-item>
+    <a
+      (mouseenter)="hasChildren(item) && toggleSubMenu($event, true)"
+      (mouseleave)="hasChildren(item) && toggleSubMenu($event, false)"
+      (click)="navigate($event, item.route)"
+      [ngClass]="{
+        'active-link': isActive(item.route) && !hasChildren(item),
+        'active-group': isActive(item.route) && hasChildren(item)
+      }"
+      class="d-flex align-items-center w-100 itemGroup-parent"
+      [attr.data-cy]="item.icon"
+    >
+      <mat-icon svgIcon="{{ item?.icon }}" [attr.data-cy]="item.icon"></mat-icon>
+      <div>{{ item?.name | translate }}</div>
+      <div class="subItemsMenu d-none" *ngIf="hasChildren(item) && !displayChildren(item)">
+        <div class="subItem-header">
+          <a
+            (click)="navigate($event, item.route)"
+            [ngClass]="{
+              'active-link': isActive(item.route)
+            }"
+          >
+            <span>{{ item?.name | translate }}</span>
+          </a>
+        </div>
+        <mat-list-item *ngFor="let childItem of item.children" class="subItem">
+          <a
+            (click)="navigate($event, childItem.route)"
+            [ngClass]="{
+              'active-link': isActive(childItem.route)
+            }"
+            class="d-flex align-items-center w-100"
+          >
+            <mat-icon svgIcon="{{ childItem?.icon }}" [attr.data-cy]="item.icon"></mat-icon>
+            <span>{{ childItem?.name | translate }}</span>
+          </a>
+        </mat-list-item>
+      </div>
+    </a>
+  </mat-list-item>
+  <div
+    [ngClass]="{
+      'd-none': !hasChildren(item) || (hasChildren(item) && !displayChildren(item)),
+      'd-block': hasChildren(item) && displayChildren(item)
+    }"
+  >
+    <mat-list-item *ngFor="let childItem of item.children" class="subItem">
+      <a
+        (click)="navigate($event, childItem.route)"
+        [ngClass]="{
+          'active-link': isActive(childItem.route)
+        }"
+        class="d-flex align-items-center w-100"
+      >
+        <mat-icon svgIcon="{{ childItem?.icon }}" [attr.data-cy]="childItem.icon"></mat-icon>
+        <span>{{ childItem?.name | translate }}</span>
+      </a>
+    </mat-list-item>
+  </div>
+</div>

@@ -1,0 +1,8 @@
+.context-menu__item.context-menu__item--default.mat-menu-item {
+  &:focus {
+    background-color: $color-white;
+  }
+  &:hover {
+    background-color: $color-gray-400;
+  }
+}
